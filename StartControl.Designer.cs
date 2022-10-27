@@ -1,6 +1,6 @@
 ﻿namespace P3_Project
 {
-    partial class StartScreen
+    partial class StartControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // StartScreen
+            // StartControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Crimson;
-            this.Name = "StartScreen";
-            this.Size = new System.Drawing.Size(1028, 486);
+            this.BackColor = System.Drawing.Color.DarkRed;
+            this.Name = "StartControl";
+            this.Size = new System.Drawing.Size(1057, 568);
             this.ResumeLayout(false);
 
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace P3_Project
 {
@@ -11,12 +12,17 @@ namespace P3_Project
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
         [STAThread]
+
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //This is where the main form is instanietet
+            MainForm mainForm = new MainForm();
+            //This is here the Main main form is run in the application
+            Application.Run(mainForm);
         }
     }
 }

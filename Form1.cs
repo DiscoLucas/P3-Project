@@ -69,5 +69,10 @@ namespace P3_Project
             else
                 imageBox1.SizeMode = PictureBoxSizeMode.Normal;
         }
+
+        private void userControl1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
