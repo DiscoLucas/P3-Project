@@ -37,11 +37,22 @@ namespace P3_Project
 
         public void ShowAllImportenComponets() {
             menuStrip1.Show();
+            
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PageManager.Instance.changePage(settingsControl1);
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

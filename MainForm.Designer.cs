@@ -28,29 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.settingsControl1 = new P3_Project.SettingsControl();
-            this.startControl1 = new P3_Project.StartControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startControl1 = new P3_Project.StartControl();
+            this.settingsControl1 = new P3_Project.SettingsControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // settingsControl1
-            // 
-            this.settingsControl1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.settingsControl1.Location = new System.Drawing.Point(-3, 42);
-            this.settingsControl1.Name = "settingsControl1";
-            this.settingsControl1.Size = new System.Drawing.Size(1093, 396);
-            this.settingsControl1.TabIndex = 2;
-            // 
-            // startControl1
-            // 
-            this.startControl1.BackColor = System.Drawing.Color.DarkRed;
-            this.startControl1.Location = new System.Drawing.Point(-3, 42);
-            this.startControl1.Name = "startControl1";
-            this.startControl1.Size = new System.Drawing.Size(1093, 396);
-            this.startControl1.TabIndex = 1;
             // 
             // menuStrip1
             // 
@@ -60,7 +44,7 @@
             this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1091, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(825, 28);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -78,13 +62,31 @@
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
+            // startControl1
+            // 
+            this.startControl1.BackColor = System.Drawing.Color.DarkRed;
+            this.startControl1.Location = new System.Drawing.Point(0, 31);
+            this.startControl1.Name = "startControl1";
+            this.startControl1.Size = new System.Drawing.Size(824, 416);
+            this.startControl1.TabIndex = 5;
+            // 
+            // settingsControl1
+            // 
+            this.settingsControl1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.settingsControl1.Location = new System.Drawing.Point(0, 31);
+            this.settingsControl1.Name = "settingsControl1";
+            this.settingsControl1.Size = new System.Drawing.Size(824, 416);
+            this.settingsControl1.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1091, 450);
-            this.Controls.Add(this.settingsControl1);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(825, 450);
             this.Controls.Add(this.startControl1);
+            this.Controls.Add(this.settingsControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -98,10 +100,10 @@
         }
 
         #endregion
-        private StartControl startControl1;
-        private SettingsControl settingsControl1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private SettingsControl settingsControl1;
+        private StartControl startControl1;
     }
 }
