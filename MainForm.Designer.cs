@@ -33,6 +33,8 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startControl1 = new P3_Project.StartControl();
             this.settingsControl1 = new P3_Project.SettingsControl();
+            this.starRecognitionControl1 = new P3_Project.StarRecognitionControl();
+            this.exportControl1 = new P3_Project.ExportControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,10 +66,12 @@
             // 
             // startControl1
             // 
+            this.startControl1.AutoSize = true;
+            this.startControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.startControl1.BackColor = System.Drawing.Color.DarkRed;
-            this.startControl1.Location = new System.Drawing.Point(0, 31);
+            this.startControl1.Location = new System.Drawing.Point(1, 31);
             this.startControl1.Name = "startControl1";
-            this.startControl1.Size = new System.Drawing.Size(824, 416);
+            this.startControl1.Size = new System.Drawing.Size(495, 398);
             this.startControl1.TabIndex = 5;
             // 
             // settingsControl1
@@ -78,6 +82,22 @@
             this.settingsControl1.Size = new System.Drawing.Size(824, 416);
             this.settingsControl1.TabIndex = 4;
             // 
+            // starRecognitionControl1
+            // 
+            this.starRecognitionControl1.Location = new System.Drawing.Point(0, 31);
+            this.starRecognitionControl1.Name = "starRecognitionControl1";
+            this.starRecognitionControl1.Size = new System.Drawing.Size(978, 519);
+            this.starRecognitionControl1.TabIndex = 6;
+            this.starRecognitionControl1.Load += new System.EventHandler(this.starRecognitionControl1_Load);
+            // 
+            // exportControl1
+            // 
+            this.exportControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.exportControl1.Location = new System.Drawing.Point(0, 31);
+            this.exportControl1.Name = "exportControl1";
+            this.exportControl1.Size = new System.Drawing.Size(996, 561);
+            this.exportControl1.TabIndex = 7;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -85,6 +105,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(825, 450);
+            this.Controls.Add(this.exportControl1);
+            this.Controls.Add(this.starRecognitionControl1);
             this.Controls.Add(this.startControl1);
             this.Controls.Add(this.settingsControl1);
             this.Controls.Add(this.menuStrip1);
@@ -105,5 +127,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private SettingsControl settingsControl1;
         private StartControl startControl1;
+        private StarRecognitionControl starRecognitionControl1;
+        private ExportControl exportControl1;
     }
 }

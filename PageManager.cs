@@ -51,5 +51,41 @@ namespace P3_Project
                userControl.BringToFront();
 
         }
+        
+        public void changePage(string userControlNAME)
+        {
+
+            for (int i = 0; i < form.Controls.Count; i++)
+            {
+                if (form.Controls[i].Name.Equals(userControlNAME))
+                {
+                    form.Controls[i].Show();
+                }
+                else {
+                    form.Controls[i].Hide();
+                }
+                    
+
+            }
+            form.ShowAllImportenComponets();
+
+        }
+
+        public UserControl getUserControl(string userControlNAME)
+        {
+            UserControl userControl = null;
+            for (int i = 0; i < form.Controls.Count; i++)
+            {
+                if (form.Controls[i].Name.Equals(userControlNAME))
+                {
+                    userControl = (UserControl) form.Controls[i];
+                }
+             
+
+
+            }
+            return userControl;
+
+        }
     }
 }

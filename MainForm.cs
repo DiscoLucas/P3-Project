@@ -54,5 +54,10 @@ namespace P3_Project
         {
 
         }
+
+        private void starRecognitionControl1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

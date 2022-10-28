@@ -14,6 +14,8 @@ namespace P3_Project
 {
     public partial class StartControl : UserControl
     {
+        
+        string nextPage = "starRecognitionControl1";
         public List<Image> targetImages = new List<Image>();
         public StartControl()
         {
@@ -93,7 +95,8 @@ namespace P3_Project
         /// <param name="e"></param>
         private void NextPage_Click(object sender, EventArgs e)
         {
-
+            DarkRoom.Instance.addImages(targetImages);
+            PageManager.Instance.changePage(nextPage);
         }
     }
 }
