@@ -4,11 +4,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace P3_Project
 {
@@ -17,6 +20,8 @@ namespace P3_Project
         
         string nextPage = "starRecognitionControl1";
         public List<Image> targetImages = new List<Image>();
+        string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG" };
+        string[] rawFileFormats = { "NEF", "CR2" };
         public StartControl()
         {
             InitializeComponent();
@@ -35,6 +40,33 @@ namespace P3_Project
 
         }
         /// <summary>
+        /// https://stackoverflow.com/questions/227604/reading-raw-image-files-as-gdi-bitmaps
+        /// </summary>
+        /// <param name="inputFile"></param>
+        /// <param name="dcRawExe"></param>
+        /// <returns></returns>
+        public MemoryStream GetImageData(string inputFile, string dcRawExe)
+        {
+
+
+            var startInfo = new ProcessStartInfo(dcRawExe)
+            {
+                Arguments = "-c -e \"" + inputFile + "\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+
+            var process = Process.Start(startInfo);
+
+           // var image = Image.FromStream(process.StandardOutput.BaseStream);
+            
+            var memoryStream = new MemoryStream();
+           /* image.Save(memoryStream, ImageFormat.Png);*/
+
+            return memoryStream;
+        }
+
+        /// <summary>
         /// https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog.multiselect?view=windowsdesktop-6.0
         /// </summary>
         /// <param name="sender"></param>
@@ -50,14 +82,41 @@ namespace P3_Project
                     
                     try
                     {
-                        PictureBox pb = new PictureBox();
-                        Image loadedImage = Image.FromFile(file);
-                        targetImages.Add(loadedImage);
-                        pb.Height = loadedImage.Height;
-                        pb.Width = loadedImage.Width;
-                        pb.Image = loadedImage;
-                        flowLayoutPanel1.Controls.Add(pb);
+                        bool found = false;
+                        string[] fileString = file.Split('.');
+                        string fileformat = fileString[fileString.Length - 1];
+                        Debug.WriteLine(fileString[fileString.Length - 1]);
+                        for (int i = 0; i < rawFileFormats.Length; i++) {
+                            if (rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase)) {
+                                Debug.WriteLine("File is raw and the type " + rawFileFormats[i]+ " but it is not implement yet");
+                                string fileName = file.Split('/')[file.Split('/').Length-1];
+                                MemoryStream m = GetImageData(file, fileName);
+                                Debug.WriteLine(m.Length);
+                                
 
+                                found = true;
+                            }
+                        }
+
+                        for (int i = 0; i < coomonFileFormats.Length; i++)
+                        {
+                            if (coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                PictureBox pb = new PictureBox();
+                                Image loadedImage = Image.FromFile(file);
+                                targetImages.Add(loadedImage);
+                                pb.Height = loadedImage.Height;
+                                pb.Width = loadedImage.Width;
+                                pb.Image = loadedImage;
+                                flowLayoutPanel1.Controls.Add(pb);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            MessageBox.Show("the file format is not supported try another one"
+                        );
+                        }
                     }
                     catch (SecurityException ex)
                     {
