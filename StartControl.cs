@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageMagick;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,33 +40,16 @@ namespace P3_Project
         {
 
         }
-        /// <summary>
-        /// https://stackoverflow.com/questions/227604/reading-raw-image-files-as-gdi-bitmaps
-        /// </summary>
-        /// <param name="inputFile"></param>
-        /// <param name="dcRawExe"></param>
-        /// <returns></returns>
-        public MemoryStream GetImageData(string inputFile, string dcRawExe)
-        {
 
+        private void createPictureBox(Image loadedImage) {
+            PictureBox pb = new PictureBox();
+            targetImages.Add(loadedImage);
+            pb.Height = loadedImage.Height;
+            pb.Width = loadedImage.Width;
+            pb.Image = loadedImage;
+            flowLayoutPanel1.Controls.Add(pb);
 
-            var startInfo = new ProcessStartInfo(dcRawExe)
-            {
-                Arguments = "-c -e \"" + inputFile + "\"",
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            };
-
-            var process = Process.Start(startInfo);
-
-           // var image = Image.FromStream(process.StandardOutput.BaseStream);
-            
-            var memoryStream = new MemoryStream();
-           /* image.Save(memoryStream, ImageFormat.Png);*/
-
-            return memoryStream;
         }
-
         /// <summary>
         /// https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog.multiselect?view=windowsdesktop-6.0
         /// </summary>
@@ -89,12 +73,18 @@ namespace P3_Project
                         for (int i = 0; i < rawFileFormats.Length; i++) {
                             if (rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase)) {
                                 Debug.WriteLine("File is raw and the type " + rawFileFormats[i]+ " but it is not implement yet");
-                                string fileName = file.Split('/')[file.Split('/').Length-1];
-                                MemoryStream m = GetImageData(file, fileName);
-                                Debug.WriteLine(m.Length);
-                                
-
+                                MagickImage magickimage = new MagickImage(file);
+                                magickimage.Format = MagickFormat.Tiff;
+                                magickimage.SetCompression(CompressionMethod.NoCompression);
+                                magickimage.SetBitDepth(16);
+                                Stream imagestream = new System.IO.MemoryStream();
+                                magickimage.Write(imagestream);
+                                Image loadedImage = Image.FromStream(imagestream);  
+                                imagestream.Close(); 
+                                GC.Collect(0);
+                                createPictureBox(loadedImage);
                                 found = true;
+                                break;
                             }
                         }
 
@@ -104,15 +94,13 @@ namespace P3_Project
                             {
                                 PictureBox pb = new PictureBox();
                                 Image loadedImage = Image.FromFile(file);
-                                targetImages.Add(loadedImage);
-                                pb.Height = loadedImage.Height;
-                                pb.Width = loadedImage.Width;
-                                pb.Image = loadedImage;
-                                flowLayoutPanel1.Controls.Add(pb);
+                                createPictureBox(loadedImage);
                                 found = true;
                                 break;
                             }
                         }
+                        GC.Collect(1);
+                        GC.Collect(2);
                         if (!found) {
                             MessageBox.Show("the file format is not supported try another one"
                         );
