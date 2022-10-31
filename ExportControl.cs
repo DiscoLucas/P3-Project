@@ -26,7 +26,16 @@ namespace P3_Project
 
         private void ExportImage_Click(object sender, EventArgs e)
         {
-
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string fileDir = saveFileDialog1.FileName;
+                if (fileDir.Length > 0) {
+                    Debug.WriteLine(fileDir);
+                    Image output = DarkRoom.Instance.getImage(0);
+                    output.Save(fileDir);
+                }
+                
+            }
         }
 
         private void TryAgain_Click(object sender, EventArgs e)

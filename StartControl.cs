@@ -97,6 +97,7 @@ namespace P3_Project
         {
             DarkRoom.Instance.addImages(targetImages);
             PageManager.Instance.changePage(nextPage);
+            targetImages.Clear();
         }
     }
 }

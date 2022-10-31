@@ -31,6 +31,7 @@
             this.ExportImage = new System.Windows.Forms.Button();
             this.TryAgain = new System.Windows.Forms.Button();
             this.OutPutImage = new Emgu.CV.UI.PanAndZoomPictureBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.OutPutImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,5 +84,6 @@
         private System.Windows.Forms.Button ExportImage;
         private System.Windows.Forms.Button TryAgain;
         private Emgu.CV.UI.PanAndZoomPictureBox OutPutImage;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
