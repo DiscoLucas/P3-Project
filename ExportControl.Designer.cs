@@ -63,6 +63,7 @@
             this.OutPutImage.Size = new System.Drawing.Size(652, 435);
             this.OutPutImage.TabIndex = 2;
             this.OutPutImage.TabStop = false;
+            this.OutPutImage.Click += new System.EventHandler(this.OutPutImage_Click);
             // 
             // ExportControl
             // 

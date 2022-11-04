@@ -43,5 +43,10 @@ namespace P3_Project
             DarkRoom.Instance.cleanDarkRoom();
             PageManager.Instance.changePage("startControl1");
         }
+
+        private void OutPutImage_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

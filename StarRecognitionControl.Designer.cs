@@ -33,7 +33,7 @@
             // 
             // NextPage
             // 
-            this.NextPage.Location = new System.Drawing.Point(396, 197);
+            this.NextPage.Location = new System.Drawing.Point(405, 413);
             this.NextPage.Name = "NextPage";
             this.NextPage.Size = new System.Drawing.Size(159, 94);
             this.NextPage.TabIndex = 0;

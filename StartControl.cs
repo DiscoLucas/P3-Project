@@ -21,7 +21,7 @@ namespace P3_Project
         
         string nextPage = "starRecognitionControl1";
         public List<Image> targetImages = new List<Image>();
-        string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG" };
+        string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
         string[] rawFileFormats = { "NEF", "CR2" };
         public StartControl()
         {
@@ -72,15 +72,18 @@ namespace P3_Project
                         Debug.WriteLine(fileString[fileString.Length - 1]);
                         for (int i = 0; i < rawFileFormats.Length; i++) {
                             if (rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase)) {
-                                Debug.WriteLine("File is raw and the type " + rawFileFormats[i]+ " but it is not implement yet");
+                                Debug.WriteLine("File is raw and the type " + rawFileFormats[i]);
                                 MagickImage magickimage = new MagickImage(file);
                                 magickimage.Format = MagickFormat.Tiff;
                                 magickimage.SetCompression(CompressionMethod.NoCompression);
                                 magickimage.SetBitDepth(16);
                                 Stream imagestream = new System.IO.MemoryStream();
                                 magickimage.Write(imagestream);
-                                Image loadedImage = Image.FromStream(imagestream);  
-                                imagestream.Close(); 
+                                Image loadedImage = Image.FromStream(imagestream,true);
+                                
+                                imagestream.Dispose();
+                                imagestream.Close();
+                                
                                 GC.Collect(0);
                                 createPictureBox(loadedImage);
                                 found = true;
@@ -92,7 +95,7 @@ namespace P3_Project
                         {
                             if (coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                PictureBox pb = new PictureBox();
+           
                                 Image loadedImage = Image.FromFile(file);
                                 createPictureBox(loadedImage);
                                 found = true;
@@ -124,7 +127,7 @@ namespace P3_Project
                 }
 
                 Debug.WriteLine("Amount of Image loaded is: " + targetImages.Count);
-                if (targetImages.Count > 0) {
+                if (targetImages.Count > 1) {
                     NextPage.Show();
                 }
             }
@@ -143,8 +146,15 @@ namespace P3_Project
         private void NextPage_Click(object sender, EventArgs e)
         {
             DarkRoom.Instance.addImages(targetImages);
+            StarRecognitionControl sr = (StarRecognitionControl)PageManager.Instance.getUserControl(nextPage);
+            sr.startRecognition();
             PageManager.Instance.changePage(nextPage);
             targetImages.Clear();
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

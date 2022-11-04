@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Emgu.CV.UI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,6 +18,15 @@ namespace P3_Project
             InitializeComponent();
         }
 
+        public void startRecognition() {
+            DarkRoom.Instance.detectStarts(new Emgu.CV.Structure.Bgr(0, 255, 20));
+            PanAndZoomPictureBox pb = new PanAndZoomPictureBox();
+            Image img = DarkRoom.Instance.getOutputImageAsImage();
+            pb.Height = img.Height;
+            pb.Width = img.Width;
+            pb.Image = img;
+            this.Controls.Add(pb);
+        }
         private void StarRecognitionControl_Load(object sender, EventArgs e)
         {
 
