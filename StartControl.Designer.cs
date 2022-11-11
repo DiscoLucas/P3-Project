@@ -28,20 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.SelectFilesBTN = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.NextPage = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // SelectFilesBTN
             // 
             this.SelectFilesBTN.AutoSize = true;
-            this.SelectFilesBTN.Location = new System.Drawing.Point(0, 369);
+            this.SelectFilesBTN.Location = new System.Drawing.Point(3, 4);
+            this.SelectFilesBTN.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SelectFilesBTN.Name = "SelectFilesBTN";
-            this.SelectFilesBTN.Size = new System.Drawing.Size(87, 26);
+            this.SelectFilesBTN.Size = new System.Drawing.Size(101, 32);
             this.SelectFilesBTN.TabIndex = 0;
             this.SelectFilesBTN.Text = "Select Files";
             this.SelectFilesBTN.UseVisualStyleBackColor = true;
@@ -54,9 +57,10 @@
             // 
             // NextPage
             // 
-            this.NextPage.Location = new System.Drawing.Point(417, 369);
+            this.NextPage.Location = new System.Drawing.Point(110, 4);
+            this.NextPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.NextPage.Name = "NextPage";
-            this.NextPage.Size = new System.Drawing.Size(75, 23);
+            this.NextPage.Size = new System.Drawing.Size(84, 29);
             this.NextPage.TabIndex = 1;
             this.NextPage.Text = "button1";
             this.NextPage.UseVisualStyleBackColor = true;
@@ -65,34 +69,53 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(492, 337);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(246, 77);
             this.flowLayoutPanel1.TabIndex = 2;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
             // 
-            // contextMenuStrip1
+            // tableLayoutPanel1
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(630, 460);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.SelectFilesBTN);
+            this.flowLayoutPanel2.Controls.Add(this.NextPage);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 396);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(472, 61);
+            this.flowLayoutPanel2.TabIndex = 3;
             // 
             // StartControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.DarkRed;
-            this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.NextPage);
-            this.Controls.Add(this.SelectFilesBTN);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "StartControl";
-            this.Size = new System.Drawing.Size(495, 398);
+            this.Size = new System.Drawing.Size(636, 466);
             this.Load += new System.EventHandler(this.StartControl_Load);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -102,6 +125,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button NextPage;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
     }
 }
