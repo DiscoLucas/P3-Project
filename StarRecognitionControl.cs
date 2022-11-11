@@ -19,7 +19,7 @@ namespace P3_Project
         }
 
         public void startRecognition() {
-            DarkRoom.Instance.detectStarts(new Emgu.CV.Structure.Bgr(0, 255, 20));
+            DarkRoom.Instance.detectStarts();
             PanAndZoomPictureBox pb = new PanAndZoomPictureBox();
             Image img = DarkRoom.Instance.getOutputImageAsImage();
             pb.Height = img.Height;

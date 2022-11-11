@@ -6,6 +6,7 @@ namespace P3_Project
     
     public sealed class PageManager
     {
+        public string cacheFolder = '\u005c'+"cache" + '\u005c';
         private static PageManager instance = null;
         private static readonly object padlock = new object();
         private MainForm form;
