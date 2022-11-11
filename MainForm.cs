@@ -62,7 +62,8 @@ namespace P3_Project
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            var myForm = new UserSettingsForm();
+            myForm.Show();
         }
     }
 }

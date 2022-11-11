@@ -3,11 +3,11 @@
   <Class Name="P3_Project.DarkRoom">
     <Position X="9.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAABAAAAAAAABAAAAAQAIACCAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAgCAgAAAFgAAAAAAABAAAABQAIACCAQAAA=</HashCode>
       <FileName>DarkRoom.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="P3_Project.Settings">
+  <Class Name="P3_Project.UserSettings">
     <Position X="4.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
