@@ -79,12 +79,62 @@ namespace P3_Project
         /// </summary>
         /// <param name="stepnumber"></param>
         public void writeLineToLog(int stepnumber, string[] imagesPath) {
-            if (!logpathBeenSet) {
+            // TextWriter klassen skal bruges
+            TextWriter tw;
+            if (!logpathBeenSet)
+            {
                 logPath = Directory.GetCurrentDirectory() + cacheFolder + logPath;
+
                 logpathBeenSet = true;
+                // Tjekker at der er en fil med det navn
+                if (!File.Exists(logPath))
+                {
+                    //skriv kode her hvis vi gerne ville have headers
+                }
+                for (int i = 0; i < imagesPath.Length; i++)
+                {
+
+                    string input = "," + imagesPath[i];
+                    if (i == 0)
+                    {
+                        Debug.WriteLine(input);
+                        input = stepnumber + input;
+                        Debug.WriteLine(input);
+                        writeCSVLine(input,false);
+                    }
+                    else {
+                        Debug.WriteLine(input);
+                        writeCSVLine(input,true);
+                    }
+                    
+                }
+            }
+            else { 
+                //skriver en linje i csv filen
+                for (int i = 0; i < imagesPath.Length; i++) {
+
+                    string input = "," + imagesPath[i];
+                    if (i == 0) {
+                        input = stepnumber + input;
+                    }
+                    writeCSVLine(input,true);
+                }
             }
             
+            
 
+        }
+
+        void writeCSVLine(string input,bool append)
+        {
+            // TextWriter klassen skal bruges
+            TextWriter tw;
+            // tw indstilles til StreamWriter og til appending
+            tw = new StreamWriter(logPath, append);
+            // tw tilføjer en linje med input
+            tw.WriteLine(input);
+            // Derefter lukkes den igen
+            tw.Close();
         }
         public UserControl getUserControl(string userControlNAME)
         {

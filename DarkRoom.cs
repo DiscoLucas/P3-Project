@@ -102,6 +102,9 @@ namespace P3_Project
             MachtedImage targetImg = imagesmachtes[0];
             output[0] = imagesmachtes[0].images;
             Size size = imagesmachtes[0].images.Size;
+            string[] paths = new string[(int)imagesmachtes.Count];
+            paths[0] = targetImg.imagepath;
+            targetImg.images.Save(targetImg.imagepath);
             for (int i = 1; i < imagesmachtes.Count; i++) {
                 MachtedImage wrapedImg = imagesmachtes[i];
                 
@@ -110,8 +113,9 @@ namespace P3_Project
                 CvInvoke.WarpPerspective(wrapedImg.images, warpedImage, homography, size);
                 output[i] = warpedImage;
                 warpedImage.Save(wrapedImg.imagepath);
+                paths[i] = wrapedImg.imagepath;
             }
-
+            PageManager.Instance.writeLineToLog(1, paths);
             return output;
         }
 
