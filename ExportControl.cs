@@ -48,5 +48,10 @@ namespace P3_Project
         {
 
         }
+
+        private void ExportControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

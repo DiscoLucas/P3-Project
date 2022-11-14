@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace P3_Project
@@ -7,6 +8,8 @@ namespace P3_Project
     public sealed class PageManager
     {
         public string cacheFolder = '\u005c'+"cache" + '\u005c';
+        public string logPath = "log.csv";
+        bool logpathBeenSet = false;
         private static PageManager instance = null;
         private static readonly object padlock = new object();
         private MainForm form;
@@ -71,7 +74,18 @@ namespace P3_Project
             form.ShowAllImportenComponets();
 
         }
+        /// <summary>
+        /// This function writes to the log what step your on and ...
+        /// </summary>
+        /// <param name="stepnumber"></param>
+        public void writeLineToLog(int stepnumber, string[] imagesPath) {
+            if (!logpathBeenSet) {
+                logPath = Directory.GetCurrentDirectory() + cacheFolder + logPath;
+                logpathBeenSet = true;
+            }
+            
 
+        }
         public UserControl getUserControl(string userControlNAME)
         {
             UserControl userControl = null;

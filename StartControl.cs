@@ -21,7 +21,7 @@ namespace P3_Project
     {
         
         string nextPage = "starRecognitionControl1";
-        public List<Mat> targetImages = new List<Mat>();
+        public List<string> targetImages = new List<string>();
         string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
         string[] rawFileFormats = { "NEF", "CR2", "RAW" };
         public StartControl()
@@ -45,7 +45,6 @@ namespace P3_Project
         private void createPictureBox(Mat loadedImage) {
            
             PictureBox pb = new PictureBox();
-            targetImages.Add(loadedImage);
             Bitmap lm = loadedImage.ToBitmap();
             pb.Height = lm.Height;
             pb.Width = lm.Width;
@@ -91,6 +90,7 @@ namespace P3_Project
                                 Debug.WriteLine(newImagePath);
                                 magickimage.Write(newImagePath);
                                 magickimage.Dispose();
+                                targetImages.Add(newImagePath);
                                 Mat loadedimage = new Mat(newImagePath);
                                 createPictureBox(loadedimage);
                                 found = true;
@@ -115,6 +115,7 @@ namespace P3_Project
                                 Debug.WriteLine(newImagePath);
                                 magickimage.Write(newImagePath);
                                 magickimage.Dispose();
+                                targetImages.Add(newImagePath);
                                 Mat loadedimage = new Mat(newImagePath);
                                 createPictureBox(loadedimage);
                                 found = true;
