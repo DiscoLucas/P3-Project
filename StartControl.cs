@@ -22,7 +22,7 @@ namespace P3_Project
         string nextPage = "starRecognitionControl1";
         public List<Image> targetImages = new List<Image>();
         string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
-        string[] rawFileFormats = { "NEF", "CR2" };
+        string[] rawFileFormats = { "NEF", "CR2", "RAW" };
         public StartControl()
         {
             InitializeComponent();
