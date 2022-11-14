@@ -94,7 +94,6 @@
     <Compile Include="PageManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="Settings1.cs" />
     <Compile Include="SettingsControl.cs">
       <SubType>UserControl</SubType>
@@ -120,7 +119,6 @@
     <Compile Include="StartScreen.Designer.cs">
       <DependentUpon>StartScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="test.cs" />
     <Compile Include="UserSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
