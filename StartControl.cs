@@ -1,4 +1,5 @@
-﻿using ImageMagick;
+﻿using Emgu.CV;
+using ImageMagick;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace P3_Project
     {
         
         string nextPage = "starRecognitionControl1";
-        public List<Image> targetImages = new List<Image>();
+        public List<Mat> targetImages = new List<Mat>();
         string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
         string[] rawFileFormats = { "NEF", "CR2", "RAW" };
         public StartControl()
@@ -41,12 +42,14 @@ namespace P3_Project
 
         }
 
-        private void createPictureBox(Image loadedImage) {
+        private void createPictureBox(Mat loadedImage) {
+           
             PictureBox pb = new PictureBox();
             targetImages.Add(loadedImage);
-            pb.Height = loadedImage.Height;
-            pb.Width = loadedImage.Width;
-            pb.Image = loadedImage;
+            Bitmap lm = loadedImage.ToBitmap();
+            pb.Height = lm.Height;
+            pb.Width = lm.Width;
+            pb.Image = lm;
             flowLayoutPanel1.Controls.Add(pb);
 
         }
@@ -60,48 +63,65 @@ namespace P3_Project
             DialogResult dr = this.openFileDialog1.ShowDialog();
             if (dr == System.Windows.Forms.DialogResult.OK)
             {
+                int indexOFFile = 0;
                 // Read the files
                 foreach (String file in openFileDialog1.FileNames)
                 {
                     
                     try
                     {
+                       
                         bool found = false;
                         string[] fileString = file.Split('.');
                         string fileformat = fileString[fileString.Length - 1];
                         Debug.WriteLine(fileString[fileString.Length - 1]);
                         for (int i = 0; i < rawFileFormats.Length; i++) {
                             if (rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase)) {
-                                Debug.WriteLine("File is raw and the type " + rawFileFormats[i]);
+                                
                                 MagickImage magickimage = new MagickImage(file);
                                 magickimage.Format = MagickFormat.Tiff;
                                 magickimage.SetCompression(CompressionMethod.NoCompression);
                                 magickimage.SetBitDepth(16);
-                                Stream imagestream = new System.IO.MemoryStream();
-                                magickimage.Write(imagestream);
-                                Image loadedImage = Image.FromStream(imagestream,true);
-                                
-                                imagestream.Dispose();
-                                imagestream.Close();
-                                
-                                GC.Collect(0);
-                                createPictureBox(loadedImage);
+                                string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
+                                bool exists = System.IO.Directory.Exists(newImagePath);
+
+                                if (!exists)
+                                    System.IO.Directory.CreateDirectory(newImagePath);
+                                newImagePath += indexOFFile +".TIFF";
+                                Debug.WriteLine(newImagePath);
+                                magickimage.Write(newImagePath);
+                                magickimage.Dispose();
+                                Mat loadedimage = new Mat(newImagePath);
+                                createPictureBox(loadedimage);
                                 found = true;
                                 break;
                             }
                         }
-
                         for (int i = 0; i < coomonFileFormats.Length; i++)
                         {
-                            if (coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
+                            if ( coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
                             {
-           
-                                Image loadedImage = Image.FromFile(file);
-                                createPictureBox(loadedImage);
+
+                                MagickImage magickimage = new MagickImage(file);
+                                magickimage.Format = MagickFormat.Tiff;
+                                magickimage.SetCompression(CompressionMethod.NoCompression);
+                                magickimage.SetBitDepth(16);
+                                string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
+                                bool exists = System.IO.Directory.Exists(newImagePath);
+
+                                if (!exists)
+                                    System.IO.Directory.CreateDirectory(newImagePath);
+                                newImagePath += indexOFFile + ".TIFF";
+                                Debug.WriteLine(newImagePath);
+                                magickimage.Write(newImagePath);
+                                magickimage.Dispose();
+                                Mat loadedimage = new Mat(newImagePath);
+                                createPictureBox(loadedimage);
                                 found = true;
                                 break;
                             }
                         }
+                        indexOFFile++;
                         GC.Collect(1);
                         GC.Collect(2);
                         if (!found) {

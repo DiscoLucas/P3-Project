@@ -21,7 +21,7 @@ namespace P3_Project
         public void showExportWindow()
         {
             //set the image in the picturebox
-            OutPutImage.Image = DarkRoom.Instance.getImage(0);
+            //OutPutImage.Image = DarkRoom.Instance.getImage(0);
         }
 
         private void ExportImage_Click(object sender, EventArgs e)
@@ -31,8 +31,8 @@ namespace P3_Project
                 string fileDir = saveFileDialog1.FileName;
                 if (fileDir.Length > 0) {
                     Debug.WriteLine(fileDir);
-                    Image output = DarkRoom.Instance.getImage(0);
-                    output.Save(fileDir);
+                    //Image output = DarkRoom.Instance.getImage(0);
+                   // output.Save(fileDir);
                 }
                 
             }
