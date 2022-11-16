@@ -40,14 +40,30 @@ namespace P3_Project
 
         }
 
+        public void SaveSettings()
+        {
+            Properties.Settings.Default.useGPU = cudaCheckBox.Checked;
+        }
+
         private void saveSettings_Click(object sender, EventArgs e)
         {
-
+            SaveSettings();
         }
 
         private void cudaCheckBox_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void saveClose_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+            Close();
+        }
+
+        private void close_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
