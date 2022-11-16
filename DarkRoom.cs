@@ -10,6 +10,7 @@ using Emgu.CV.Face;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.IO;
+using static Emgu.CV.Features2D.ORB;
 
 namespace P3_Project
 {
@@ -46,41 +47,43 @@ namespace P3_Project
             List<MachtedImage> imagesmachtes = new List<MachtedImage>(); 
             Mat stakkedImage = new Mat();
             VectorOfKeyPoint vkeypoints1 = new VectorOfKeyPoint();
-            ORB orb = new ORB(numberOfFeatures: 1500, scaleFactor: 1.6f, nLevels: 8, fastThreshold: 8, edgeThreshold: 31);
+            ORB orb = new ORB(numberOfFeatures: 1500, scaleFactor: 1.2f, nLevels: 8, fastThreshold: 20, edgeThreshold: 31, scoreType: ORB.ScoreType.Harris, patchSize: 31, WTK_A: 2,firstLevel: 1);
             Mat firstDescriptoir = new Mat();
             
             for (int i = 1; i < targetImages.Count; i++) {
                 try
                 {
-                   if (i == 1) {
-                    stakkedImage = new Mat(targetImages[0]);
-                    orb.DetectAndCompute(stakkedImage, null, vkeypoints1, firstDescriptoir, false);
-                    MachtedImage machtedImage1 = new MachtedImage(null, vkeypoints1, null, firstDescriptoir,stakkedImage, targetImages[0]);
-                    imagesmachtes.Add(machtedImage1);
-                }
-                
-                Mat img2 = new Mat(targetImages[i]) ;
-                VectorOfKeyPoint vkeypoints2 = new VectorOfKeyPoint();
-                Mat secondDescriptoir = new Mat();
-                orb.DetectAndCompute(img2, null, vkeypoints2, secondDescriptoir, false);
-                VectorOfVectorOfDMatch maches = new VectorOfVectorOfDMatch();
-                BFMatcher machter = new BFMatcher(DistanceType.Hamming, crossCheck: false);
-                machter.KnnMatch(firstDescriptoir, secondDescriptoir, maches, k, null);
-                Mat mask = new Mat(img2.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                mask.SetTo(new MCvScalar(255));
-                Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
-                int nonZeroPix = CvInvoke.CountNonZero(mask);
-                if (nonZeroPix >= 0) {
-                    Debug.WriteLine("is null: \n"+ " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
-                    int amountOfOkFeatures = Features2DToolbox.VoteForSizeAndOrientation(vkeypoints1, vkeypoints2, maches, mask, 1.5, 20);
-
-                    if (amountOfOkFeatures >= 4)
+                    if (i == 1)
                     {
-                        MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, img2, targetImages[i]);
-                        imagesmachtes.Add(machtedImage2);
+                        stakkedImage = new Mat(targetImages[0]);
+                        orb.DetectAndCompute(stakkedImage, null, vkeypoints1, firstDescriptoir, false);
+                        MachtedImage machtedImage1 = new MachtedImage(null, vkeypoints1, null, firstDescriptoir, stakkedImage, targetImages[0]);
+                        imagesmachtes.Add(machtedImage1);
                     }
-                    
-                }
+
+                    Mat img2 = new Mat(targetImages[i]);
+                    VectorOfKeyPoint vkeypoints2 = new VectorOfKeyPoint();
+                    Mat secondDescriptoir = new Mat();
+                    orb.DetectAndCompute(img2, null, vkeypoints2, secondDescriptoir, false);
+                    VectorOfVectorOfDMatch maches = new VectorOfVectorOfDMatch();
+                    BFMatcher machter = new BFMatcher(DistanceType.Hamming, crossCheck: false);
+                    machter.KnnMatch(firstDescriptoir, secondDescriptoir, maches, k, null);
+                    Mat mask = new Mat(img2.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+                    mask.SetTo(new MCvScalar(255));
+                    Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
+                    int nonZeroPix = CvInvoke.CountNonZero(mask);
+                    if (nonZeroPix >= 0)
+                    {
+                        Debug.WriteLine("is null: \n" + " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
+                        int amountOfOkFeatures = Features2DToolbox.VoteForSizeAndOrientation(vkeypoints1, vkeypoints2, maches, mask, 1.5, 20);
+
+                        if (amountOfOkFeatures >= 4)
+                        {
+                            MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, img2, targetImages[i]);
+                            imagesmachtes.Add(machtedImage2);
+                        }
+
+                    }
                 }
                 catch (Exception e)
                 {
@@ -88,7 +91,7 @@ namespace P3_Project
                 }
 
 
-        }
+            }
             Mat[] wrapeImages = warpImages(imagesmachtes);
             Debug.WriteLine(wrapeImages.Length);
             outputImage = stackImages(wrapeImages);
@@ -107,7 +110,6 @@ namespace P3_Project
             targetImg.images.Save(targetImg.imagepath);
             for (int i = 1; i < imagesmachtes.Count; i++) {
                 MachtedImage wrapedImg = imagesmachtes[i];
-                
                 homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
                 Mat warpedImage = new Mat();
                 CvInvoke.WarpPerspective(wrapedImg.images, warpedImage, homography, size);
