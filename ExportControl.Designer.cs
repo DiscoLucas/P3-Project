@@ -75,6 +75,7 @@
             this.Controls.Add(this.ExportImage);
             this.Name = "ExportControl";
             this.Size = new System.Drawing.Size(996, 561);
+            this.Load += new System.EventHandler(this.ExportControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.OutPutImage)).EndInit();
             this.ResumeLayout(false);
 

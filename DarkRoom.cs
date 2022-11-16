@@ -9,6 +9,8 @@ using Emgu.CV.Util;
 using Emgu.CV.Face;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.IO;
+using static Emgu.CV.Features2D.ORB;
 
 namespace P3_Project
 {
@@ -16,9 +18,12 @@ namespace P3_Project
     {
         private static DarkRoom instance = null;
         private static readonly object padlock = new object();
-
-        private List<Mat> targetImages = new List<Mat>();
+        /// <summary>
+        /// list of the file path for the target images
+        /// </summary>
+        private List<string> targetImages = new List<string>();
         private Mat outputImage = null;
+        private string outputImagePath = "opm.TIFF";
         DarkRoom()
         {
         }
@@ -37,46 +42,48 @@ namespace P3_Project
                 }
             }
         }
-        public void detectStarts() {
+        public void detectStartsAndStack() {
             int k = 1;
             List<MachtedImage> imagesmachtes = new List<MachtedImage>(); 
             Mat stakkedImage = new Mat();
             VectorOfKeyPoint vkeypoints1 = new VectorOfKeyPoint();
-            ORB orb = new ORB(numberOfFeatures: 1500, scaleFactor: 1.2f, nLevels: 12, fastThreshold: 8, edgeThreshold: 31);
+            ORB orb = new ORB(numberOfFeatures: 1500, scaleFactor: 1.2f, nLevels: 8, fastThreshold: 20, edgeThreshold: 31, scoreType: ORB.ScoreType.Harris, patchSize: 31, WTK_A: 2,firstLevel: 1);
             Mat firstDescriptoir = new Mat();
             
             for (int i = 1; i < targetImages.Count; i++) {
                 try
                 {
-                   if (i == 1) {
-                    stakkedImage = targetImages[0].Clone();
-                    orb.DetectAndCompute(stakkedImage, null, vkeypoints1, firstDescriptoir, false);
-                    MachtedImage machtedImage1 = new MachtedImage(null, vkeypoints1, null, firstDescriptoir,stakkedImage);
-                    imagesmachtes.Add(machtedImage1);
-                }
-                
-                Mat img2 = targetImages[i].Clone(); ;
-                VectorOfKeyPoint vkeypoints2 = new VectorOfKeyPoint();
-                Mat secondDescriptoir = new Mat();
-                orb.DetectAndCompute(img2, null, vkeypoints2, secondDescriptoir, false);
-                VectorOfVectorOfDMatch maches = new VectorOfVectorOfDMatch();
-                BFMatcher machter = new BFMatcher(DistanceType.Hamming, crossCheck: false);
-                machter.KnnMatch(firstDescriptoir, secondDescriptoir, maches, k, null);
-                Mat mask = new Mat(img2.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                mask.SetTo(new MCvScalar(255));
-                Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
-                int nonZeroPix = CvInvoke.CountNonZero(mask);
-                if (nonZeroPix >= 0) {
-                    Debug.WriteLine("is null: \n"+ " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
-                    int amountOfOkFeatures = Features2DToolbox.VoteForSizeAndOrientation(vkeypoints1, vkeypoints2, maches, mask, 1.5, 20);
-
-                    if (amountOfOkFeatures >= 4)
+                    if (i == 1)
                     {
-                        MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, img2);
-                        imagesmachtes.Add(machtedImage2);
+                        stakkedImage = new Mat(targetImages[0]);
+                        orb.DetectAndCompute(stakkedImage, null, vkeypoints1, firstDescriptoir, false);
+                        MachtedImage machtedImage1 = new MachtedImage(null, vkeypoints1, null, firstDescriptoir, stakkedImage, targetImages[0]);
+                        imagesmachtes.Add(machtedImage1);
                     }
-                    
-                }
+
+                    Mat img2 = new Mat(targetImages[i]);
+                    VectorOfKeyPoint vkeypoints2 = new VectorOfKeyPoint();
+                    Mat secondDescriptoir = new Mat();
+                    orb.DetectAndCompute(img2, null, vkeypoints2, secondDescriptoir, false);
+                    VectorOfVectorOfDMatch maches = new VectorOfVectorOfDMatch();
+                    BFMatcher machter = new BFMatcher(DistanceType.Hamming, crossCheck: false);
+                    machter.KnnMatch(firstDescriptoir, secondDescriptoir, maches, k, null);
+                    Mat mask = new Mat(img2.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+                    mask.SetTo(new MCvScalar(255));
+                    Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
+                    int nonZeroPix = CvInvoke.CountNonZero(mask);
+                    if (nonZeroPix >= 0)
+                    {
+                        Debug.WriteLine("is null: \n" + " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
+                        int amountOfOkFeatures = Features2DToolbox.VoteForSizeAndOrientation(vkeypoints1, vkeypoints2, maches, mask, 1.5, 20);
+
+                        if (amountOfOkFeatures >= 4)
+                        {
+                            MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, img2, targetImages[i]);
+                            imagesmachtes.Add(machtedImage2);
+                        }
+
+                    }
                 }
                 catch (Exception e)
                 {
@@ -84,7 +91,7 @@ namespace P3_Project
                 }
 
 
-        }
+            }
             Mat[] wrapeImages = warpImages(imagesmachtes);
             Debug.WriteLine(wrapeImages.Length);
             outputImage = stackImages(wrapeImages);
@@ -98,16 +105,19 @@ namespace P3_Project
             MachtedImage targetImg = imagesmachtes[0];
             output[0] = imagesmachtes[0].images;
             Size size = imagesmachtes[0].images.Size;
+            string[] paths = new string[(int)imagesmachtes.Count];
+            paths[0] = targetImg.imagepath;
+            targetImg.images.Save(targetImg.imagepath);
             for (int i = 1; i < imagesmachtes.Count; i++) {
                 MachtedImage wrapedImg = imagesmachtes[i];
-                
                 homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
                 Mat warpedImage = new Mat();
                 CvInvoke.WarpPerspective(wrapedImg.images, warpedImage, homography, size);
                 output[i] = warpedImage;
-                
+                warpedImage.Save(wrapedImg.imagepath);
+                paths[i] = wrapedImg.imagepath;
             }
-
+            PageManager.Instance.writeLineToLog(1, paths);
             return output;
         }
 
@@ -120,6 +130,9 @@ namespace P3_Project
                 wrapedImg /= wrapeImages.Length;
                 staggedImages += wrapedImg;
             }
+            outputImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder + outputImagePath;
+            Debug.WriteLine(outputImagePath);
+            staggedImages.Save(outputImagePath);
             return staggedImages;
         }
        
@@ -156,20 +169,20 @@ namespace P3_Project
             return cvImage.Mat;
         }
 
-        public void addImages(List<Mat> tm) {
-            foreach (Mat image in tm)
-                targetImages.Add(image);
+        public void addImages(List<string> tm) {
+            foreach (string path in tm)
+                targetImages.Add(path);
         }
 
-        public void addImages(Mat m)
+        public void addImages(string m)
         {
             targetImages.Add(m);
         }
-        public List<Mat> getImages() { 
+        public List<string> getImages() { 
             return targetImages;
         }
         public Mat getImage(int i) {
-            return targetImages[i];
+            return new Mat(targetImages[i]);
         }
         /// <summary>
         /// This Function cleans the dark room by:
@@ -199,13 +212,15 @@ namespace P3_Project
         public Mat mask;
         public BFMatcher machter;
         public VectorOfVectorOfDMatch maches;
-        public MachtedImage(VectorOfVectorOfDMatch maches, VectorOfKeyPoint vkeypoints, Mat mask, Mat descriptoir,Mat images)
+        public string imagepath;
+        public MachtedImage(VectorOfVectorOfDMatch maches, VectorOfKeyPoint vkeypoints, Mat mask, Mat descriptoir,Mat images, string imagepath)
         {
             this.vkeypoints= vkeypoints;
             this.descriptoir= descriptoir;
             this.mask= mask;
             this.maches = maches;
             this.images = images;
+            this.imagepath = imagepath;
         }
     }
 }
