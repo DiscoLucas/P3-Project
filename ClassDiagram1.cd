@@ -10,7 +10,7 @@
   <Class Name="P3_Project.UserSettingsForm">
     <Position X="6.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAACAAAQAAAACAIAACAAAAAAAAIAAIgAAAICA=</HashCode>
+      <HashCode>AAAAAAgAACAAEQAgAQCAIAACAIAAAAQAIIAIgAAAICA=</HashCode>
       <FileName>UserSettingsForm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -23,5 +23,12 @@
     <TypeIdentifier />
     <Lollipop Position="0.2" />
   </Class>
+  <Interface Name="P3_Project.DarkRoomInterface">
+    <Position X="9.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DarkRoomInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
