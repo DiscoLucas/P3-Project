@@ -72,6 +72,7 @@ namespace P3_Project
                     mask.SetTo(new MCvScalar(255));
                     Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
                     int nonZeroPix = CvInvoke.CountNonZero(mask);
+                    img2.Dispose();
                     if (nonZeroPix >= 0)
                     {
                         Debug.WriteLine("is null: \n" + " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
@@ -79,7 +80,7 @@ namespace P3_Project
 
                         if (amountOfOkFeatures >= 4)
                         {
-                            MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, img2, targetImages[i]);
+                            MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, null, targetImages[i]);
                             imagesmachtes.Add(machtedImage2);
                         }
 
@@ -112,7 +113,7 @@ namespace P3_Project
                 MachtedImage wrapedImg = imagesmachtes[i];
                 homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
                 Mat warpedImage = new Mat();
-                CvInvoke.WarpPerspective(wrapedImg.images, warpedImage, homography, size);
+                CvInvoke.WarpPerspective(new Mat(wrapedImg.imagepath), warpedImage, homography, size);
                 output[i] = warpedImage;
                 warpedImage.Save(wrapedImg.imagepath);
                 paths[i] = wrapedImg.imagepath;
