@@ -61,11 +61,11 @@
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageProcessing1 = new P3_Project.ImageProcessing();
             this.exportControl1 = new P3_Project.ExportControl();
             this.starRecognitionControl1 = new P3_Project.StarRecognitionControl();
             this.startControl1 = new P3_Project.StartControl();
             this.settingsControl1 = new P3_Project.SettingsControl();
-            this.imageProcessing1 = new P3_Project.ImageProcessing();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +81,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(825, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1179, 28);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -313,6 +313,13 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
             this.aboutToolStripMenuItem.Text = "&About...";
             // 
+            // imageProcessing1
+            // 
+            this.imageProcessing1.Location = new System.Drawing.Point(0, 31);
+            this.imageProcessing1.Name = "imageProcessing1";
+            this.imageProcessing1.Size = new System.Drawing.Size(1179, 580);
+            this.imageProcessing1.TabIndex = 8;
+            // 
             // exportControl1
             // 
             this.exportControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
@@ -351,20 +358,13 @@
             this.settingsControl1.Size = new System.Drawing.Size(824, 416);
             this.settingsControl1.TabIndex = 4;
             // 
-            // imageProcessing1
-            // 
-            this.imageProcessing1.Location = new System.Drawing.Point(0, 31);
-            this.imageProcessing1.Name = "imageProcessing1";
-            this.imageProcessing1.Size = new System.Drawing.Size(946, 527);
-            this.imageProcessing1.TabIndex = 8;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(825, 450);
+            this.ClientSize = new System.Drawing.Size(1179, 623);
             this.Controls.Add(this.imageProcessing1);
             this.Controls.Add(this.exportControl1);
             this.Controls.Add(this.starRecognitionControl1);

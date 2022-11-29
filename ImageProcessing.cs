@@ -16,5 +16,21 @@ namespace P3_Project
         {
             InitializeComponent();
         }
+
+        public void ImageProcessing_Load()
+        {
+            panAndZoomPictureBox1.Image = DarkRoom.Instance.getOutputImageAsImage();
+            histogramBox1.GenerateHistograms(DarkRoom.Instance.getOutputImage(), 256);
+        }
+
+        private void panAndZoomPictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

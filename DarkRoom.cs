@@ -19,6 +19,8 @@ using Emgu.CV.Dnn;
 using Emgu.CV.Reg;
 using Emgu.CV.CvEnum;
 using System.IO.IsolatedStorage;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace P3_Project
 {
@@ -27,7 +29,7 @@ namespace P3_Project
         /// <summary>
         /// imellem 0 til 1 
         /// </summary>
-        private float lightThreashold = 0.999f;
+        private float lightThreashold = 0.15f;
         private static DarkRoom instance = null;
         private static readonly object padlock = new object();
         /// <summary>
@@ -139,7 +141,7 @@ namespace P3_Project
             Debug.WriteLine(wrapeImages.Length);
             outputImage = stackImages(wrapeImages);
         }
-
+      
         private Mat[] warpImages(List<MachtedImage> imagesmachtes)
         {
             Mat homography = null;
@@ -281,6 +283,101 @@ namespace P3_Project
 
             return cvImage.Mat;
         }
+        public Mat surfaceBrightnessCuts(Image<Bgr, Byte> image, Image<Gray, Byte> imageNoiseMat)
+        {
+            if (imageNoiseMat == null) {
+                
+                    imageNoiseMat = new Image<Gray, byte>(image.Size);
+            }
+            float fMax = getHighestSaturation(image.Mat.ToBitmap());
+            Bgr color = image.GetAverage();
+            float pGrey = (float)(color.Red + color.Green + color.Blue) / 3;
+            
+            Image<Gray, Byte> Fmin = imageNoiseMat.Copy();
+            for (int y = 0; y < Fmin.Rows; y++)
+            {
+                for (int x = 0; x < Fmin.Cols; x++)
+                {
+                   float noiseValue = imageNoiseMat.Data[y, x, 0];
+                    Fmin.Data[y, x, 0] = (byte)((noiseValue - pGrey * fMax) / (1 - pGrey));
+                }
+            }
+
+            Image<Bgr, Byte> newImg = image.Copy();
+            for (int y = 0; y < image.Rows; y++)
+            {
+                for (int x = 0; x < image.Cols; x++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        float imageValue = (float)(image.Data[y, x,c]);
+                        float minValue = Fmin.Data[y, x, 0];
+                        newImg.Data[y, x, c] = (byte)((imageValue - minValue) / (fMax - minValue));
+                    }
+                }
+            }
+
+            return newImg.Mat;
+
+        }
+
+        public Mat intensityMapping(Image<Bgr, Byte> image, double gamma)
+        {
+            Image<Bgr, Byte> newImg = image.Copy();
+            for (int y = 0; y < image.Rows; y++)
+            {
+                for (int x = 0; x < image.Cols; x++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        newImg.Data[y, x, c] = (byte)(Math.Pow(image.Data[y, x, c] / 255.0, gamma) * 255.0);
+                    }
+                }
+            }
+
+            return newImg.Mat;
+        }
+
+        public Mat contrast(Image<Bgr, Byte> image,double alpha, double beta)
+        {
+            Image<Bgr, Byte> newImg = image.Copy();
+            for (int y = 0; y < image.Rows; y++)
+            {
+                for (int x = 0; x < image.Cols; x++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        newImg.Data[y, x, c] = (byte)(alpha * image.Data[y, x, c] + beta);
+                    }
+                }
+            }
+
+            return newImg.Mat;
+        }
+
+      
+        public Mat colorBalance(Image<Bgr, Byte> image, double blue, double green, double red) {
+
+            Image<Bgr, Byte> newImg = image.Copy();
+            for (int y = 0; y < image.Rows; y++)
+            {
+                for (int x = 0; x < image.Cols; x++)
+                {
+                    int b = image.Data[y, x, 0];
+                    int g = image.Data[y, x, 1];
+                    int r = image.Data[y, x, 2];
+
+                    newImg.Data[y, x, 0] = (Byte)(b * blue);
+                    newImg.Data[y, x, 1] = (Byte)(g * green);
+                    newImg.Data[y, x, 2] = (Byte)(r * red);
+                }
+            }
+            return newImg.Mat;
+        }
+        
+        public void denoize() {
+            //måske noget i denne stil https://www.researchgate.net/profile/Mukesh-Motwani/publication/228790062_Survey_of_image_denoising_techniques/links/5655816308ae4988a7b0b43f/Survey-of-image-denoising-techniques.pdf
+        }
 
         public void addImages(List<string> tm) {
             foreach (string path in tm)
@@ -309,11 +406,10 @@ namespace P3_Project
             return outputImage;
         }
 
-        public Image getOutputImageAsImage() {
+        public Bitmap getOutputImageAsImage() {
             
             return outputImage.ToBitmap();
             
-                
         }
     }
 

@@ -35,8 +35,8 @@ namespace P3_Project
         private void NextPage_Click(object sender, EventArgs e)
         {
             PageManager.Instance.changePage("imageProcessing1");
-           /* ExportControl expControl = (ExportControl)PageManager.Instance.getUserControl("imageProcessing1");
-            expControl.showExportWindow();*/
+            ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
+            ip.ImageProcessing_Load();
         }
     }
 }

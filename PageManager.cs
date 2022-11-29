@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Emgu.CV;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
