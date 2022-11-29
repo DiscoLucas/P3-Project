@@ -41,10 +41,9 @@
             // SelectFilesBTN
             // 
             this.SelectFilesBTN.AutoSize = true;
-            this.SelectFilesBTN.Location = new System.Drawing.Point(3, 4);
-            this.SelectFilesBTN.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.SelectFilesBTN.Location = new System.Drawing.Point(3, 3);
             this.SelectFilesBTN.Name = "SelectFilesBTN";
-            this.SelectFilesBTN.Size = new System.Drawing.Size(101, 32);
+            this.SelectFilesBTN.Size = new System.Drawing.Size(90, 26);
             this.SelectFilesBTN.TabIndex = 0;
             this.SelectFilesBTN.Text = "Select Files";
             this.SelectFilesBTN.UseVisualStyleBackColor = true;
@@ -57,10 +56,9 @@
             // 
             // NextPage
             // 
-            this.NextPage.Location = new System.Drawing.Point(110, 4);
-            this.NextPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.NextPage.Location = new System.Drawing.Point(99, 3);
             this.NextPage.Name = "NextPage";
-            this.NextPage.Size = new System.Drawing.Size(84, 29);
+            this.NextPage.Size = new System.Drawing.Size(75, 23);
             this.NextPage.TabIndex = 1;
             this.NextPage.Text = "button1";
             this.NextPage.UseVisualStyleBackColor = true;
@@ -69,10 +67,9 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 4);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(246, 77);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(219, 62);
             this.flowLayoutPanel1.TabIndex = 2;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
             // 
@@ -82,35 +79,37 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(630, 460);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 368);
             this.tableLayoutPanel1.TabIndex = 0;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.SelectFilesBTN);
             this.flowLayoutPanel2.Controls.Add(this.NextPage);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 396);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 316);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(472, 61);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(420, 49);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // StartControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.DarkRed;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "StartControl";
-            this.Size = new System.Drawing.Size(636, 466);
+            this.Size = new System.Drawing.Size(566, 372);
             this.Load += new System.EventHandler(this.StartControl_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);

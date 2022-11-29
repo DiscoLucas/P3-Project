@@ -11,11 +11,23 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.IO;
 using static Emgu.CV.Features2D.ORB;
+using System.Windows.Forms.VisualStyles;
+using System.Drawing.Drawing2D;
+using Emgu.CV.XObjdetect;
+using System.Linq;
+using Emgu.CV.Dnn;
+using Emgu.CV.Reg;
+using Emgu.CV.CvEnum;
+using System.IO.IsolatedStorage;
 
 namespace P3_Project
 {
     public sealed class DarkRoom
     {
+        /// <summary>
+        /// imellem 0 til 1 
+        /// </summary>
+        private float lightThreashold = 0.999f;
         private static DarkRoom instance = null;
         private static readonly object padlock = new object();
         /// <summary>
@@ -42,61 +54,90 @@ namespace P3_Project
                 }
             }
         }
+
         public void detectStartsAndStack() {
-            int k = 1;
-            List<MachtedImage> imagesmachtes = new List<MachtedImage>(); 
-            Mat stakkedImage = new Mat();
-            VectorOfKeyPoint vkeypoints1 = new VectorOfKeyPoint();
-            ORB orb = new ORB(numberOfFeatures: 1500, scaleFactor: 1.2f, nLevels: 8, fastThreshold: 20, edgeThreshold: 31, scoreType: ORB.ScoreType.Harris, patchSize: 31, WTK_A: 2,firstLevel: 1);
-            Mat firstDescriptoir = new Mat();
-            
-            for (int i = 1; i < targetImages.Count; i++) {
-                try
-                {
-                    if (i == 1)
-                    {
-                        stakkedImage = new Mat(targetImages[0]);
-                        orb.DetectAndCompute(stakkedImage, null, vkeypoints1, firstDescriptoir, false);
-                        MachtedImage machtedImage1 = new MachtedImage(null, vkeypoints1, null, firstDescriptoir, stakkedImage, targetImages[0]);
-                        imagesmachtes.Add(machtedImage1);
-                    }
+            List<MachtedImage> imagesmachtes = new List<MachtedImage>();
+            string PathToImage1 = targetImages[0];
+            Mat Image1 = CvInvoke.Imread(PathToImage1); /* Emgu.CV.Mat is a class which can store the pixel values.*/
+            Mat mask1 = getDetectionMaskFromImage(Image1,255);//create a mask of the area of where it should look for importent points
+            VectorOfKeyPoint KeyPoints1 = new VectorOfKeyPoint(); // KeyPoints1 - for storing the keypoints of Image1
+            ORB ORB = new ORB(1500); // Emgu.CV.Features2D.ORB class. this takes care of the orb dectiontion.
+            Mat Descriptors1 = new Mat(); // Descriptors1 - for storing the descriptors of Image1
+            MachtedImage machtedImage1 = new MachtedImage(null, KeyPoints1, null, Descriptors1, Image1, targetImages[0]);
+            imagesmachtes.Add(machtedImage1);
+            //Feature Extraction from Image1
+            ORB.DetectAndCompute(Image1, mask1, KeyPoints1, Descriptors1, false);
+            for (int j = 1; j < targetImages.Count; j++) {
+                try {
+                    
+                    
+                    string PathToImage2 = targetImages[j];
+                    Mat Image2 = CvInvoke.Imread(PathToImage2); // Image2 now have the details of second image 
+                    Mat mask2 = getDetectionMaskFromImage(Image2,255);
+                    VectorOfKeyPoint KeyPoints2 = new VectorOfKeyPoint(); // KeyPoints2 - for storing the keypoints of Image2
+                    Mat Descriptors2 = new Mat(); // Descriptors2 - for storing the descriptors of Image2
+                    
+                    /* Detects Keypoints in Image1 and then computes descriptors on the image from the keypoints. 
+                     * Keypoints will be stored into - KeyPoints1 and Descriptors will be stored into - Descriptors1*/
+                    //Feature Extraction from Image2
+                    ORB.DetectAndCompute(Image2, mask2, KeyPoints2, Descriptors2, false);
+                    Image<Gray, byte> maskimg = mask2.ToImage<Gray, byte>();
+                    KeyPoints2.FilterByPixelsMask(maskimg);
+                    double uniquenessthreshold = 0.80;// 
+                    int k = 2;
+                    /*  Count of best matches found per each descriptor 
+                    or less if a descriptor has less than k possible matches in total. */
 
-                    Mat img2 = new Mat(targetImages[i]);
-                    VectorOfKeyPoint vkeypoints2 = new VectorOfKeyPoint();
-                    Mat secondDescriptoir = new Mat();
-                    orb.DetectAndCompute(img2, null, vkeypoints2, secondDescriptoir, false);
-                    VectorOfVectorOfDMatch maches = new VectorOfVectorOfDMatch();
-                    BFMatcher machter = new BFMatcher(DistanceType.Hamming, crossCheck: false);
-                    machter.KnnMatch(firstDescriptoir, secondDescriptoir, maches, k, null);
-                    Mat mask = new Mat(img2.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                    mask.SetTo(new MCvScalar(255));
-                    Features2DToolbox.VoteForUniqueness(maches, 0.8, mask);
-                    int nonZeroPix = CvInvoke.CountNonZero(mask);
-                    img2.Dispose();
-                    if (nonZeroPix >= 0)
-                    {
-                        Debug.WriteLine("is null: \n" + " vk1: " + (vkeypoints1 == null) + " m " + (maches == null) + " mask " + (mask == null) + " ");
-                        int amountOfOkFeatures = Features2DToolbox.VoteForSizeAndOrientation(vkeypoints1, vkeypoints2, maches, mask, 1.5, 20);
+                    BFMatcher matcher = new BFMatcher(DistanceType.Hamming); // BruteForceMatcher to perform descriptor matching.
+                    matcher.Add(Descriptors2); // Descriptors of Image1 is added.
+                    VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch(); // For storing the output of matching operation.
+                    matcher.KnnMatch(Descriptors1, matches, k, null); // matches will now have the result of matching operation.
+                    Mat mm = new Mat();
+                    Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), null);
+                    mm.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\mabe" + 00 + ".png");
+                    outputImage = mm;
 
-                        if (amountOfOkFeatures >= 4)
+                    mask2 = new Mat(matches.Size, 1, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+                    mask2.SetTo(new MCvScalar(255));
+                    MDMatch[][] array = matches.ToArrayOfArray();
+                    byte[] array2 = new byte[array.Length];
+                    GCHandle gCHandle = GCHandle.Alloc(array2, GCHandleType.Pinned);
+                    using (Mat mat = new Mat(array.Length, 1, DepthType.Cv8U, 1, gCHandle.AddrOfPinnedObject(), 1))
+                    {
+                        mask2.CopyTo(mat);
+                        for (int i = 0; i < array.Length; i++)
                         {
-                            MachtedImage machtedImage2 = new MachtedImage(maches, vkeypoints2, mask, secondDescriptoir, null, targetImages[i]);
-                            imagesmachtes.Add(machtedImage2);
+                            if (array2[i] != 0 && (double)(array[i][0].Distance / array[i][1].Distance) > uniquenessthreshold)
+                            {
+                                array2[i] = 0;
+                            }
                         }
 
+                        mat.CopyTo(mask2);
+                        mask2 = mat.Clone();
+                        int nonzeroElement = CvInvoke.CountNonZero(mask2);
+                        
+                        if (nonzeroElement >= 4)
+                        {
+                            Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), mask2);
+                            mm.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\mabe" + 01 + ".png");
+                            MachtedImage machtedImage2 = new MachtedImage(matches, KeyPoints2, mask2, Descriptors2, Image2, targetImages[1]);
+                            imagesmachtes.Add(machtedImage2);
+                            
+                            gCHandle.Free();
+                        }
                     }
+                    
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
                 }
-
-
             }
+
             Mat[] wrapeImages = warpImages(imagesmachtes);
             Debug.WriteLine(wrapeImages.Length);
             outputImage = stackImages(wrapeImages);
-
         }
 
         private Mat[] warpImages(List<MachtedImage> imagesmachtes)
@@ -109,21 +150,92 @@ namespace P3_Project
             string[] paths = new string[(int)imagesmachtes.Count];
             paths[0] = targetImg.imagepath;
             targetImg.images.Save(targetImg.imagepath);
-            for (int i = 1; i < imagesmachtes.Count; i++) {
+            for (int i = 1; i < imagesmachtes.Count; i++)
+            {
                 MachtedImage wrapedImg = imagesmachtes[i];
+                //CvInvoke.FindHomography()
                 homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
+                
                 Mat warpedImage = new Mat();
                 CvInvoke.WarpPerspective(new Mat(wrapedImg.imagepath), warpedImage, homography, size);
+
                 output[i] = warpedImage;
                 warpedImage.Save(wrapedImg.imagepath);
                 paths[i] = wrapedImg.imagepath;
+
+                
+                
+                
             }
+
             PageManager.Instance.writeLineToLog(1, paths);
             return output;
         }
+        public Mat convertToGray(Mat m) {
+            Image<Gray, Byte> img = m.ToImage<Gray, Byte>();
+            return img.Mat;
+        }
 
+        Mat getDetectionMaskFromImage(Mat srcImg, int colorgrey)
+        {
+            Image<Bgr, Byte> simg = srcImg.ToImage<Bgr, Byte>();
+            int highestS = getHighestSaturation(srcImg.ToBitmap());
+            int iterations = 3;
+            Mat mask = new Mat(srcImg.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+            mask.SetTo(new MCvScalar(0f));
+            Image<Gray, Byte> imgMask = mask.ToImage<Gray, Byte>();
+            for (int y = 0; y < srcImg.Rows; y++)
+            {
+                for (int x = 0; x < srcImg.Cols; x++)
+                {
+                    int b = simg.Data[y, x, 0];
+                    int g = simg.Data[y, x, 1];
+                    int r = simg.Data[y, x, 2];
+                    int a = (int)((b + g + r) / 3);
+                    if (a >= (highestS * lightThreashold))
+                    {
+                        imgMask.Data[y, x, 0] = 255;
+                    }
+                }
+            }
+
+
+            imgMask.Mat.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\abe.png");
+
+            Mat element = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+
+            CvInvoke.Dilate(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
+            imgMask.Mat.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\1abe.png");
+            CvInvoke.Erode(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
+            mask = imgMask.Mat;
+            mask.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\2abe.png");
+            return mask;
+        }
+        public int getHighestSaturation(Bitmap bmp)
+        {
+            int highest = 0;
+
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color clr = bmp.GetPixel((int)x, (int)y);
+
+                    int r = clr.R;
+                    int g = clr.G;
+                    int b = clr.B;
+                    int h = (r + g + b) / 3;
+                    if (highest < h) { 
+                        highest= h;
+                    }
+                }
+            }
+            return highest;
+        }
         private Mat stackImages(Mat[] wrapeImages)
         {
+            int newHeight = (int)Math.Sqrt((Math.Pow(wrapeImages[0].Size.Height, 2) + Math.Pow(wrapeImages[0].Size.Width, 2)));
+
             Mat staggedImages = wrapeImages[0];
             staggedImages /= wrapeImages.Length;
             for (int i = 1; i < wrapeImages.Length; i++) {

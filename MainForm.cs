@@ -27,7 +27,7 @@ namespace P3_Project
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
