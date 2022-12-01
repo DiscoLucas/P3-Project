@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -65,5 +67,30 @@ namespace P3_Project
             var myForm = new UserSettingsForm();
             myForm.Show();
         }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Mat op =DarkRoom.Instance.getOutputImage();
+            saveFileDialog1.Filter = saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Tiff Image|*.TIFF | Portable Network Graphic|*.PNG";
+            if (op != null)
+            {
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string fileDir = saveFileDialog1.FileName;
+                    if (fileDir.Length > 0)
+                    {
+                        Debug.WriteLine(fileDir);
+                        op.Save(fileDir);
+                    }
+
+                }
+            }
+            else {
+                MessageBox.Show("No image to save");
+            }
+        
+            
+        }
+
     }
 }

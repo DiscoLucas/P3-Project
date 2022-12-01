@@ -29,7 +29,7 @@ namespace P3_Project
         /// <summary>
         /// imellem 0 til 1 
         /// </summary>
-        private float lightThreashold = 0.15f;
+        public float lightThreashold = 0.15f;
         private static DarkRoom instance = null;
         private static readonly object padlock = new object();
         /// <summary>
@@ -38,6 +38,10 @@ namespace P3_Project
         private List<string> targetImages = new List<string>();
         private Mat outputImage = null;
         private string outputImagePath = "opm.TIFF";
+
+        private string saveStageName = "saveStage";
+        private int indexOfImage = 0;
+        private int currentIndexOfImage = 0;
         DarkRoom()
         {
         }
@@ -57,6 +61,15 @@ namespace P3_Project
             }
         }
 
+        public void saveChangeToImage(Mat mat) {
+            string outputPath = PageManager.Instance.cacheFolder + saveStageName + currentIndexOfImage + ".TIFF";
+            Debug.WriteLine(outputPath);
+            outputImage.Save(outputImagePath);
+            currentIndexOfImage++;
+            indexOfImage++;
+            outputImage = mat;
+            //skriv noger der skriver i loggen
+        }
         public void detectStartsAndStack() {
             List<MachtedImage> imagesmachtes = new List<MachtedImage>();
             string PathToImage1 = targetImages[0];
@@ -178,7 +191,7 @@ namespace P3_Project
             return img.Mat;
         }
 
-        Mat getDetectionMaskFromImage(Mat srcImg, int colorgrey)
+        public Mat getDetectionMaskFromImage(Mat srcImg, int colorgrey)
         {
             Image<Bgr, Byte> simg = srcImg.ToImage<Bgr, Byte>();
             int highestS = getHighestSaturation(srcImg.ToBitmap());
@@ -259,7 +272,7 @@ namespace P3_Project
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        private Mat GetMatFromSDImage(System.Drawing.Image image)
+        public Mat GetMatFromSDImage(System.Drawing.Image image)
         {
             int stride = 0;
             Bitmap bmp = new Bitmap(image);
@@ -312,11 +325,11 @@ namespace P3_Project
                     {
                         float imageValue = (float)(image.Data[y, x,c]);
                         float minValue = Fmin.Data[y, x, 0];
-                        newImg.Data[y, x, c] = (byte)((imageValue - minValue) / (fMax - minValue));
+                        newImg.Data[y, x, c] = (byte)(255 - ((imageValue - minValue) / (fMax - minValue)));
                     }
                 }
             }
-
+      
             return newImg.Mat;
 
         }
@@ -407,8 +420,9 @@ namespace P3_Project
         }
 
         public Bitmap getOutputImageAsImage() {
-            
-            return outputImage.ToBitmap();
+            if (outputImage != null)
+                return outputImage.ToBitmap();
+            return null;
             
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,7 +31,31 @@ namespace P3_Project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            SurfaceBrightnessCutsForm sbc = new SurfaceBrightnessCutsForm();
+            sbc.loadWindow();
+            sbc.Show();
         }
+
+        private void IntensityMapping_btn_Click(object sender, EventArgs e)
+        {
+            IntensityMappingForm imf = new IntensityMappingForm();
+            imf.loadWindow();
+            imf.Show();
+        }
+
+        private void Contrast_btn_Click(object sender, EventArgs e)
+        {
+            ContrastForm cf = new ContrastForm();
+            cf.loadWindow();
+            cf.Show();
+        }
+
+        private void Color_Balance_btn_Click(object sender, EventArgs e)
+        {
+            ColorBalanceForm cbf = new ColorBalanceForm();
+            cbf.loadWindow();
+            cbf.Show();
+        }
+
     }
 }

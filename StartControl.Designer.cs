@@ -60,7 +60,7 @@
             this.NextPage.Name = "NextPage";
             this.NextPage.Size = new System.Drawing.Size(75, 23);
             this.NextPage.TabIndex = 1;
-            this.NextPage.Text = "button1";
+            this.NextPage.Text = "Next";
             this.NextPage.UseVisualStyleBackColor = true;
             this.NextPage.Click += new System.EventHandler(this.NextPage_Click);
             // 

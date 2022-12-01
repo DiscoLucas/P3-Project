@@ -32,6 +32,9 @@
             this.panAndZoomPictureBox1 = new Emgu.CV.UI.PanAndZoomPictureBox();
             this.histogramBox1 = new Emgu.CV.UI.HistogramBox();
             this.SurfaceBrightnessCut = new System.Windows.Forms.Button();
+            this.IntensityMapping_btn = new System.Windows.Forms.Button();
+            this.Contrast_btn = new System.Windows.Forms.Button();
+            this.Color_Balance_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.panAndZoomPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.histogramBox1)).BeginInit();
             this.SuspendLayout();
@@ -63,10 +66,43 @@
             this.SurfaceBrightnessCut.UseVisualStyleBackColor = true;
             this.SurfaceBrightnessCut.Click += new System.EventHandler(this.button1_Click);
             // 
+            // IntensityMapping_btn
+            // 
+            this.IntensityMapping_btn.Location = new System.Drawing.Point(40, 110);
+            this.IntensityMapping_btn.Name = "IntensityMapping_btn";
+            this.IntensityMapping_btn.Size = new System.Drawing.Size(327, 70);
+            this.IntensityMapping_btn.TabIndex = 5;
+            this.IntensityMapping_btn.Text = "Intensity Mapping";
+            this.IntensityMapping_btn.UseVisualStyleBackColor = true;
+            this.IntensityMapping_btn.Click += new System.EventHandler(this.IntensityMapping_btn_Click);
+            // 
+            // Contrast_btn
+            // 
+            this.Contrast_btn.Location = new System.Drawing.Point(40, 186);
+            this.Contrast_btn.Name = "Contrast_btn";
+            this.Contrast_btn.Size = new System.Drawing.Size(327, 70);
+            this.Contrast_btn.TabIndex = 6;
+            this.Contrast_btn.Text = "Contrast";
+            this.Contrast_btn.UseVisualStyleBackColor = true;
+            this.Contrast_btn.Click += new System.EventHandler(this.Contrast_btn_Click);
+            // 
+            // Color_Balance_btn
+            // 
+            this.Color_Balance_btn.Location = new System.Drawing.Point(40, 262);
+            this.Color_Balance_btn.Name = "Color_Balance_btn";
+            this.Color_Balance_btn.Size = new System.Drawing.Size(327, 70);
+            this.Color_Balance_btn.TabIndex = 7;
+            this.Color_Balance_btn.Text = "Color Balance";
+            this.Color_Balance_btn.UseVisualStyleBackColor = true;
+            this.Color_Balance_btn.Click += new System.EventHandler(this.Color_Balance_btn_Click);
+            // 
             // ImageProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.Color_Balance_btn);
+            this.Controls.Add(this.Contrast_btn);
+            this.Controls.Add(this.IntensityMapping_btn);
             this.Controls.Add(this.SurfaceBrightnessCut);
             this.Controls.Add(this.histogramBox1);
             this.Controls.Add(this.panAndZoomPictureBox1);
@@ -83,5 +119,8 @@
         private Emgu.CV.UI.PanAndZoomPictureBox panAndZoomPictureBox1;
         private Emgu.CV.UI.HistogramBox histogramBox1;
         private System.Windows.Forms.Button SurfaceBrightnessCut;
+        private System.Windows.Forms.Button IntensityMapping_btn;
+        private System.Windows.Forms.Button Contrast_btn;
+        private System.Windows.Forms.Button Color_Balance_btn;
     }
 }

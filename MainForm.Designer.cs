@@ -66,6 +66,9 @@
             this.starRecognitionControl1 = new P3_Project.StarRecognitionControl();
             this.startControl1 = new P3_Project.StartControl();
             this.settingsControl1 = new P3_Project.SettingsControl();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.lightThreasholdControl1 = new P3_Project.LightThreasholdControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,6 +147,7 @@
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(177, 26);
             this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
@@ -358,13 +362,21 @@
             this.settingsControl1.Size = new System.Drawing.Size(824, 416);
             this.settingsControl1.TabIndex = 4;
             // 
+            // lightThreasholdControl1
+            // 
+            this.lightThreasholdControl1.Location = new System.Drawing.Point(25, 12);
+            this.lightThreasholdControl1.Name = "lightThreasholdControl1";
+            this.lightThreasholdControl1.Size = new System.Drawing.Size(1180, 691);
+            this.lightThreasholdControl1.TabIndex = 9;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1179, 623);
+            this.ClientSize = new System.Drawing.Size(1179, 735);
+            this.Controls.Add(this.lightThreasholdControl1);
             this.Controls.Add(this.imageProcessing1);
             this.Controls.Add(this.exportControl1);
             this.Controls.Add(this.starRecognitionControl1);
@@ -420,5 +432,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private ImageProcessing imageProcessing1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog2;
+        private LightThreasholdControl lightThreasholdControl1;
     }
 }

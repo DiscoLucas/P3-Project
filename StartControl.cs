@@ -20,7 +20,7 @@ namespace P3_Project
     public partial class StartControl : UserControl
     {
         
-        string nextPage = "starRecognitionControl1";
+        string nextPage = "lightThreasholdControl1";
         public List<string> targetImages = new List<string>();
         string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
         string[] rawFileFormats = { "NEF", "CR2", "RAW" };
@@ -167,8 +167,8 @@ namespace P3_Project
         private void NextPage_Click(object sender, EventArgs e)
         {
             DarkRoom.Instance.addImages(targetImages);
-            StarRecognitionControl sr = (StarRecognitionControl)PageManager.Instance.getUserControl(nextPage);
-            sr.startRecognition();
+            LightThreasholdControl sr = (LightThreasholdControl)PageManager.Instance.getUserControl(nextPage);
+            sr.loadWindow();
             PageManager.Instance.changePage(nextPage);
             targetImages.Clear();
         }
