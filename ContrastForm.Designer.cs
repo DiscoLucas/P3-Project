@@ -45,13 +45,23 @@
             // 
             this.Alpha_numericUpDown.Location = new System.Drawing.Point(31, 567);
             this.Alpha_numericUpDown.Maximum = new decimal(new int[] {
-            4000,
+            300,
+            0,
+            0,
+            0});
+            this.Alpha_numericUpDown.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
             this.Alpha_numericUpDown.Name = "Alpha_numericUpDown";
             this.Alpha_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.Alpha_numericUpDown.TabIndex = 9;
+            this.Alpha_numericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.Alpha_numericUpDown.ValueChanged += new System.EventHandler(this.Alpha_numericUpDown_ValueChanged);
             // 
             // Apply_btn
@@ -88,12 +98,12 @@
             // 
             this.Beta_numericUpDown.Location = new System.Drawing.Point(32, 667);
             this.Beta_numericUpDown.Maximum = new decimal(new int[] {
-            255,
+            510,
             0,
             0,
             0});
             this.Beta_numericUpDown.Minimum = new decimal(new int[] {
-            255,
+            510,
             0,
             0,
             -2147483648});
@@ -105,8 +115,8 @@
             // Beta_slider
             // 
             this.Beta_slider.Location = new System.Drawing.Point(12, 605);
-            this.Beta_slider.Maximum = 255;
-            this.Beta_slider.Minimum = -255;
+            this.Beta_slider.Maximum = 510;
+            this.Beta_slider.Minimum = -510;
             this.Beta_slider.Name = "Beta_slider";
             this.Beta_slider.Size = new System.Drawing.Size(1008, 56);
             this.Beta_slider.TabIndex = 10;

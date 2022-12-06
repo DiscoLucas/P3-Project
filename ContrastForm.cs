@@ -47,7 +47,7 @@ namespace P3_Project
         {
             Image<Bgr, Byte> img = DarkRoom.Instance.getOutputImage().ToImage<Bgr, Byte>();
             Mat outputMat = DarkRoom.Instance.contrast(img, alphaValue, betaValue);
-            DarkRoom.Instance.saveChangeToImage(outputMat);
+            //DarkRoom.Instance
             ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
             ip.ImageProcessing_Load();
             this.Close();

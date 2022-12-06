@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,12 +39,9 @@ namespace P3_Project
             }
         }
 
-        private void TryAgain_Click(object sender, EventArgs e)
-        {
-            DarkRoom.Instance.cleanDarkRoom();
-            PageManager.Instance.changePage("startControl1");
+        public void loadPage() {
+            panAndZoomPictureBox1.Image = DarkRoom.Instance.getOutputImageAsImage();
         }
-
         private void OutPutImage_Click(object sender, EventArgs e)
         {
 
@@ -52,6 +50,41 @@ namespace P3_Project
         private void ExportControl_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            PageManager.Instance.changePage("imageProcessing1");
+            ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
+            ip.ImageProcessing_Load();
+        }
+
+        private void Export_btn_Click(object sender, EventArgs e)
+        {
+            Mat op = DarkRoom.Instance.getOutputImage();
+            saveFileDialog1.Filter = saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Tiff Image|*.TIFF | Portable Network Graphic|*.PNG";
+            if (op != null)
+            {
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string fileDir = saveFileDialog1.FileName;
+                    if (fileDir.Length > 0)
+                    {
+                        Debug.WriteLine(fileDir);
+                        op.Save(fileDir);
+                    }
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("No image to save");
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace P3_Project
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DarkRoom.Instance.saveChangeToImage(outputMat);
+           // DarkRoom.Instance.saveChangeToImage(outputMat);
             ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
             ip.ImageProcessing_Load();
             this.Close();

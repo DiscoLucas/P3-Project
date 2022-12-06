@@ -37,6 +37,7 @@ namespace P3_Project
         /// </summary>
         private List<string> targetImages = new List<string>();
         private Mat outputImage = null;
+        public string filename = "opm.TIFF";
         private string outputImagePath = "opm.TIFF";
 
         private string saveStageName = "saveStage";
@@ -61,14 +62,13 @@ namespace P3_Project
             }
         }
 
-        public void saveChangeToImage(Mat mat) {
+        public void saveOutputImage(Mat img) {
             string outputPath = PageManager.Instance.cacheFolder + saveStageName + currentIndexOfImage + ".TIFF";
             Debug.WriteLine(outputPath);
             outputImage.Save(outputImagePath);
             currentIndexOfImage++;
             indexOfImage++;
-            outputImage = mat;
-            //skriv noger der skriver i loggen
+            outputImage = img;
         }
         public void detectStartsAndStack() {
             List<MachtedImage> imagesmachtes = new List<MachtedImage>();
@@ -168,7 +168,6 @@ namespace P3_Project
             for (int i = 1; i < imagesmachtes.Count; i++)
             {
                 MachtedImage wrapedImg = imagesmachtes[i];
-                //CvInvoke.FindHomography()
                 homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
                 
                 Mat warpedImage = new Mat();
@@ -423,6 +422,33 @@ namespace P3_Project
             if (outputImage != null)
                 return outputImage.ToBitmap();
             return null;
+            
+        }
+
+        public Bitmap getOutputImageAsImage(float scale)
+        {
+            if (outputImage != null) { 
+                Bitmap resized = new Bitmap(outputImage.ToBitmap(), new Size((int)(outputImage.ToBitmap().Width * scale),(int)( outputImage.ToBitmap().Height * scale)));
+                return resized;
+            }
+                
+            return null;
+
+        }
+
+        public void saveOutputImage(Mat outputImage, float rValue, float gValue, float bValue, float alphaValue, float betaValue, float gammaValue, bool surfaceBrightnesscuts)
+        {
+            string[] values = new string[8];
+            values[0] = DarkRoom.instance.outputImagePath;
+            values[1] = rValue.ToString();
+            values[2] = gValue.ToString();
+            values[3] = bValue.ToString();
+            values[4] = alphaValue.ToString();
+            values[5] = betaValue.ToString();
+            values[6] = gammaValue.ToString();
+            values[7] = (Convert.ToByte(surfaceBrightnesscuts)).ToString();
+            PageManager.Instance.writeLineToLog(2, values);
+            saveOutputImage(outputImage);
             
         }
     }

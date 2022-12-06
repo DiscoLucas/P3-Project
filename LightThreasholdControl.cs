@@ -25,7 +25,7 @@ namespace P3_Project
         public void loadWindow()
         {
             Bitmap original = DarkRoom.Instance.getImage(0).ToBitmap();
-            Bitmap resized = new Bitmap(original, new Size(original.Width / 2, original.Height / 2));
+            Bitmap resized = new Bitmap(original, new Size(original.Width / 6, original.Height / 6));
             panAndZoomPictureBox1.Image = resized;
             pictureShow = resized;
             updateImage();
@@ -63,6 +63,16 @@ namespace P3_Project
             DarkRoom.Instance.lightThreashold = ((float)numericUpDown1.Value) / 1000;
             Gamma.Value = (int)numericUpDown1.Value;
             updateImage();
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dt_label_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace P3_Project
         {
             InitializeComponent();
             PageManager.Instance.setForm(this);
-            PageManager.Instance.changePage(startControl1);
+            PageManager.Instance.changePage("startScreenUserControl1");
 
         }
 
@@ -34,7 +35,7 @@ namespace P3_Project
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PageManager.Instance.changePage(startControl1);
+            PageManager.Instance.changePage("startScreenUserControl1");
         }
 
         public void ShowAllImportenComponets() {
@@ -44,7 +45,7 @@ namespace P3_Project
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PageManager.Instance.changePage(settingsControl1);
+            //PageManager.Instance.changePage(settingsControl1);
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -92,5 +93,27 @@ namespace P3_Project
             
         }
 
+        private void startScreenUserControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
+            string[] files = Directory.GetFiles(newImagePath);
+            foreach (string file in files)
+            {
+                File.Delete(file);
+                Console.WriteLine($"{file} is deleted.");
+            }
+            PageManager.Instance.changePage("startControl1");
+
+        }
+
+        private void imageProcessing1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -138,8 +138,19 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PageManager.cs" />
+    <Compile Include="PictureBoxImport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PictureBoxImport.Designer.cs">
+      <DependentUpon>PictureBoxImport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings1.cs" />
     <Compile Include="SettingsControl.cs">
       <SubType>UserControl</SubType>
@@ -164,6 +175,12 @@
     </Compile>
     <Compile Include="StartScreen.Designer.cs">
       <DependentUpon>StartScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StartScreenUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StartScreenUserControl.Designer.cs">
+      <DependentUpon>StartScreenUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SurfaceBrightnessCutsForm.cs">
       <SubType>Form</SubType>
@@ -201,15 +218,14 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PictureBoxImport.resx">
+      <DependentUpon>PictureBoxImport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="SettingsControl.resx">
       <DependentUpon>SettingsControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -218,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StartControl.resx">
       <DependentUpon>StartControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartScreenUserControl.resx">
+      <DependentUpon>StartScreenUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SurfaceBrightnessCutsForm.resx">
       <DependentUpon>SurfaceBrightnessCutsForm.cs</DependentUpon>
@@ -277,6 +296,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Christian.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BackGroundStartScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

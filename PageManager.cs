@@ -8,6 +8,8 @@ namespace P3_Project
     
     public sealed class PageManager
     {
+        public string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
+        public string[] rawFileFormats = { "NEF", "CR2", "RAW" };
         public string cacheFolder = '\u005c'+"cache" + '\u005c';
         public string logPath = "log.csv";
         bool logpathBeenSet = false;

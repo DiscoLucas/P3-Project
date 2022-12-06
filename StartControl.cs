@@ -19,45 +19,38 @@ namespace P3_Project
 {
     public partial class StartControl : UserControl
     {
+
         
         string nextPage = "lightThreasholdControl1";
         public List<string> targetImages = new List<string>();
-        string[] coomonFileFormats = { "JPEG", "JPG", "JPE", "PNG", "BMP" };
-        string[] rawFileFormats = { "NEF", "CR2", "RAW" };
+        public List<string> stackImages = new List<string>();
+        int amountOfImage = 2;
         public StartControl()
         {
             InitializeComponent();
-            NextPage.Hide();
+            Add_to_Stack_btn.Hide();
+            Select_threshold_btn.Hide();
         }
-
-        private void StartControl_Load(object sender, EventArgs e)
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
-
-
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        private void createPictureBox(Mat loadedImage,FlowLayoutPanel fp)
         {
 
-        }
-
-        private void createPictureBox(Mat loadedImage) {
-           
             PictureBox pb = new PictureBox();
             Bitmap lm = loadedImage.ToBitmap();
             pb.Height = lm.Height;
             pb.Width = lm.Width;
             pb.Image = lm;
-            flowLayoutPanel1.Controls.Add(pb);
+            fp.Controls.Add(pb);
+            if (stackImages.Count >= amountOfImage) {
+                Select_threshold_btn.Show();
+            }
 
         }
-        /// <summary>
-        /// https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog.multiselect?view=windowsdesktop-6.0
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+
+        private void loadfiles()
         {
             DialogResult dr = this.openFileDialog1.ShowDialog();
             if (dr == System.Windows.Forms.DialogResult.OK)
@@ -66,40 +59,17 @@ namespace P3_Project
                 // Read the files
                 foreach (String file in openFileDialog1.FileNames)
                 {
-                    
+
                     try
                     {
-                       
+
                         bool found = false;
                         string[] fileString = file.Split('.');
                         string fileformat = fileString[fileString.Length - 1];
                         Debug.WriteLine(fileString[fileString.Length - 1]);
-                        for (int i = 0; i < rawFileFormats.Length; i++) {
-                            if (rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase)) {
-                                
-                                MagickImage magickimage = new MagickImage(file);
-                                magickimage.Format = MagickFormat.Tiff;
-                                magickimage.SetCompression(CompressionMethod.NoCompression);
-                                magickimage.SetBitDepth(16);
-                                string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
-                                bool exists = System.IO.Directory.Exists(newImagePath);
-
-                                if (!exists)
-                                    System.IO.Directory.CreateDirectory(newImagePath);
-                                newImagePath += indexOFFile +".TIFF";
-                                Debug.WriteLine(newImagePath);
-                                magickimage.Write(newImagePath);
-                                magickimage.Dispose();
-                                targetImages.Add(newImagePath);
-                                Mat loadedimage = new Mat(newImagePath);
-                                createPictureBox(loadedimage);
-                                found = true;
-                                break;
-                            }
-                        }
-                        for (int i = 0; i < coomonFileFormats.Length; i++)
+                        for (int i = 0; i < PageManager.Instance.rawFileFormats.Length; i++)
                         {
-                            if ( coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
+                            if (PageManager.Instance.rawFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
                             {
 
                                 MagickImage magickimage = new MagickImage(file);
@@ -117,7 +87,32 @@ namespace P3_Project
                                 magickimage.Dispose();
                                 targetImages.Add(newImagePath);
                                 Mat loadedimage = new Mat(newImagePath);
-                                createPictureBox(loadedimage);
+                                createPictureBox(loadedimage,Images_Sorting_fp);
+                                found = true;
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < PageManager.Instance.coomonFileFormats.Length; i++)
+                        {
+                            if (PageManager.Instance.coomonFileFormats[i].Equals(fileformat, StringComparison.CurrentCultureIgnoreCase))
+                            {
+
+                                MagickImage magickimage = new MagickImage(file);
+                                magickimage.Format = MagickFormat.Tiff;
+                                magickimage.SetCompression(CompressionMethod.NoCompression);
+                                magickimage.SetBitDepth(16);
+                                string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
+                                bool exists = System.IO.Directory.Exists(newImagePath);
+
+                                if (!exists)
+                                    System.IO.Directory.CreateDirectory(newImagePath);
+                                newImagePath += indexOFFile + ".TIFF";
+                                Debug.WriteLine(newImagePath);
+                                magickimage.Write(newImagePath);
+                                magickimage.Dispose();
+                                targetImages.Add(newImagePath);
+                                Mat loadedimage = new Mat(newImagePath);
+                                createPictureBox(loadedimage,Images_Sorting_fp);
                                 found = true;
                                 break;
                             }
@@ -125,7 +120,8 @@ namespace P3_Project
                         indexOFFile++;
                         GC.Collect(1);
                         GC.Collect(2);
-                        if (!found) {
+                        if (!found)
+                        {
                             MessageBox.Show("the file format is not supported try another one"
                         );
                         }
@@ -148,23 +144,28 @@ namespace P3_Project
                 }
 
                 Debug.WriteLine("Amount of Image loaded is: " + targetImages.Count);
-                if (targetImages.Count > 1) {
-                    NextPage.Show();
-                }
+            }
+        }
+        private void Add_files_btn_Click(object sender, EventArgs e)
+        {
+            loadfiles();
+            if (targetImages.Count > 1)
+            {
+                Add_to_Stack_btn.Show();
             }
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void Add_to_Stack_btn_Click(object sender, EventArgs e)
         {
-
+            Images_Sorting_fp.Controls.Clear();
+            stackImages = targetImages;
+            for (int i = 0; i < stackImages.Count; i++) {
+                Mat loadedimage = new Mat(stackImages[i]);
+                createPictureBox(loadedimage, ImageStack_fp);
+            }
         }
 
-        /// <summary>
-        /// Change To The next page when button is clickt
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NextPage_Click(object sender, EventArgs e)
+        private void Select_threshold_btn_Click(object sender, EventArgs e)
         {
             DarkRoom.Instance.addImages(targetImages);
             LightThreasholdControl sr = (LightThreasholdControl)PageManager.Instance.getUserControl(nextPage);
@@ -173,12 +174,7 @@ namespace P3_Project
             targetImages.Clear();
         }
 
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        private void Images_Sorting_fp_Paint(object sender, PaintEventArgs e)
         {
 
         }
