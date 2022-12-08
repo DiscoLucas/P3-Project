@@ -14,13 +14,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace P3_Project
 {
     public partial class StartControl : UserControl
     {
-
-        
+        float imageScale = 0.01f;
+        int indexOFFile = 0;
         string nextPage = "lightThreasholdControl1";
         public List<string> targetImages = new List<string>();
         public List<string> stackImages = new List<string>();
@@ -30,24 +32,47 @@ namespace P3_Project
             InitializeComponent();
             Add_to_Stack_btn.Hide();
             Select_threshold_btn.Hide();
+            ImageListView.Scrollable = true;
         }
+
+        public void reloadPage() 
+            {
+                ImageListView.Items.Clear();
+                targetImages.Clear();
+                indexOFFile = 0;
+                Select_threshold_btn.Hide();
+                ImageListView.Scrollable = true;
+            }
         private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
         {
 
         }
-        private void createPictureBox(Mat loadedImage,FlowLayoutPanel fp)
+        private void createPictureBox(Mat loadedImage, string filePath)
         {
+            // create image list and fill it 
+            var imageList = new ImageList();
+            if (ImageListView.LargeImageList != null)
+                imageList = ImageListView.LargeImageList;
+            
+            imageList.Images.Add(filePath, loadedImage.ToBitmap());
+            // tell your ListView to use the new image list
+            ImageListView.LargeImageList = imageList;
+            // add an item
+            var listViewItem = ImageListView.Items.Add(filePath);
+            // and tell the item which image to use
+            listViewItem.ImageKey = filePath;
 
-            PictureBox pb = new PictureBox();
-            Bitmap lm = loadedImage.ToBitmap();
-            pb.Height = lm.Height;
-            pb.Width = lm.Width;
-            pb.Image = lm;
-            fp.Controls.Add(pb);
-            if (stackImages.Count >= amountOfImage) {
-                Select_threshold_btn.Show();
+
+            if (loadedImage.Width > loadedImage.Height)
+            {
+                imageScale = (float)loadedImage.Height/ (float)loadedImage.Width;
+                ImageListView.LargeImageList.ImageSize = new Size(255, (int)(255 * imageScale));
             }
-
+            else
+            {
+                imageScale = (float)loadedImage.Height / (float)loadedImage.Width;
+                ImageListView.LargeImageList.ImageSize = new Size((int)(255 * imageScale), 255);
+            }
         }
 
         private void loadfiles()
@@ -55,7 +80,6 @@ namespace P3_Project
             DialogResult dr = this.openFileDialog1.ShowDialog();
             if (dr == System.Windows.Forms.DialogResult.OK)
             {
-                int indexOFFile = 0;
                 // Read the files
                 foreach (String file in openFileDialog1.FileNames)
                 {
@@ -87,7 +111,7 @@ namespace P3_Project
                                 magickimage.Dispose();
                                 targetImages.Add(newImagePath);
                                 Mat loadedimage = new Mat(newImagePath);
-                                createPictureBox(loadedimage,Images_Sorting_fp);
+                                createPictureBox(loadedimage,newImagePath);
                                 found = true;
                                 break;
                             }
@@ -112,7 +136,7 @@ namespace P3_Project
                                 magickimage.Dispose();
                                 targetImages.Add(newImagePath);
                                 Mat loadedimage = new Mat(newImagePath);
-                                createPictureBox(loadedimage,Images_Sorting_fp);
+                                createPictureBox(loadedimage, newImagePath);
                                 found = true;
                                 break;
                             }
@@ -146,6 +170,12 @@ namespace P3_Project
                 Debug.WriteLine("Amount of Image loaded is: " + targetImages.Count);
             }
         }
+
+        public void load_startControl() { 
+            targetImages.Clear();
+            ImageListView.Items.Clear();
+
+        }
         private void Add_files_btn_Click(object sender, EventArgs e)
         {
             loadfiles();
@@ -157,16 +187,18 @@ namespace P3_Project
 
         private void Add_to_Stack_btn_Click(object sender, EventArgs e)
         {
-            Images_Sorting_fp.Controls.Clear();
-            stackImages = targetImages;
-            for (int i = 0; i < stackImages.Count; i++) {
-                Mat loadedimage = new Mat(stackImages[i]);
-                createPictureBox(loadedimage, ImageStack_fp);
+            for (int i = 0; i < ImageListView.Items.Count; i++) {
+                ImageListView.Items[i].Checked = true;
             }
         }
 
         private void Select_threshold_btn_Click(object sender, EventArgs e)
         {
+            targetImages.Clear();
+            for (int i = 0; i < ImageListView.CheckedItems.Count; i++)
+            {
+                targetImages.Add(ImageListView.CheckedItems[i].Text);
+            }
             DarkRoom.Instance.addImages(targetImages);
             LightThreasholdControl sr = (LightThreasholdControl)PageManager.Instance.getUserControl(nextPage);
             sr.loadWindow();
@@ -177,6 +209,51 @@ namespace P3_Project
         private void Images_Sorting_fp_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void ImageListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ImageListView.SelectedItems.Count > 0)
+            {
+                var item = ImageListView.SelectedItems[0];
+                ImageViewForm f = new ImageViewForm();
+                f.Loaded_PreviewWindow(item.ImageKey);
+                f.Show();
+            }
+        }
+
+        private void ImageListView_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+           
+            
+        }
+
+        private void ImageListView_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            int count = 0;
+            for (int i = 0; i < ImageListView.Items.Count; i++)
+            {
+                if (ImageListView.Items[i].Checked)
+                    count++;
+            }
+            if (count < amountOfImage)
+            {
+                Select_threshold_btn.Hide();
+            }
+            else
+            {
+                Select_threshold_btn.Show();
+            }
+        }
+
+        private void Back_to_Start_Click(object sender, EventArgs e)
+        {
+            PageManager.Instance.changePage("startScreenUserControl1");
         }
     }
 }

@@ -36,9 +36,8 @@
             this.Add_files_btn = new System.Windows.Forms.Button();
             this.Select_threshold_btn = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.ImageStack_fp = new System.Windows.Forms.FlowLayoutPanel();
             this.Back_to_Start = new System.Windows.Forms.Button();
-            this.Images_Sorting_fp = new System.Windows.Forms.FlowLayoutPanel();
+            this.ImageListView = new System.Windows.Forms.ListView();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -129,12 +128,10 @@
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.40331F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.59669F));
-            this.tableLayoutPanel4.Controls.Add(this.ImageStack_fp, 1, 1);
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.2585F));
             this.tableLayoutPanel4.Controls.Add(this.Back_to_Start, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.Images_Sorting_fp, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.ImageListView, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
@@ -144,16 +141,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.83721F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1029, 430);
             this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // ImageStack_fp
-            // 
-            this.ImageStack_fp.AutoScroll = true;
-            this.ImageStack_fp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ImageStack_fp.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.ImageStack_fp.Location = new System.Drawing.Point(676, 51);
-            this.ImageStack_fp.Name = "ImageStack_fp";
-            this.ImageStack_fp.Size = new System.Drawing.Size(350, 376);
-            this.ImageStack_fp.TabIndex = 0;
+            this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
             // Back_to_Start
             // 
@@ -164,17 +152,22 @@
             this.Back_to_Start.TabIndex = 1;
             this.Back_to_Start.Text = "Back to Start";
             this.Back_to_Start.UseVisualStyleBackColor = true;
+            this.Back_to_Start.Click += new System.EventHandler(this.Back_to_Start_Click);
             // 
-            // Images_Sorting_fp
+            // ImageListView
             // 
-            this.Images_Sorting_fp.AutoScroll = true;
-            this.Images_Sorting_fp.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Images_Sorting_fp.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.Images_Sorting_fp.Location = new System.Drawing.Point(3, 51);
-            this.Images_Sorting_fp.Name = "Images_Sorting_fp";
-            this.Images_Sorting_fp.Size = new System.Drawing.Size(629, 376);
-            this.Images_Sorting_fp.TabIndex = 3;
-            this.Images_Sorting_fp.Paint += new System.Windows.Forms.PaintEventHandler(this.Images_Sorting_fp_Paint);
+            this.ImageListView.CheckBoxes = true;
+            this.ImageListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ImageListView.HideSelection = false;
+            this.ImageListView.Location = new System.Drawing.Point(3, 51);
+            this.ImageListView.MultiSelect = false;
+            this.ImageListView.Name = "ImageListView";
+            this.ImageListView.Size = new System.Drawing.Size(1023, 376);
+            this.ImageListView.TabIndex = 2;
+            this.ImageListView.UseCompatibleStateImageBehavior = false;
+            this.ImageListView.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ImageListView_ItemCheck);
+            this.ImageListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.ImageListView_ItemChecked);
+            this.ImageListView.SelectedIndexChanged += new System.EventHandler(this.ImageListView_SelectedIndexChanged);
             // 
             // StartControl
             // 
@@ -198,8 +191,7 @@
         private System.Windows.Forms.Button Add_files_btn;
         private System.Windows.Forms.Button Select_threshold_btn;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.FlowLayoutPanel ImageStack_fp;
         private System.Windows.Forms.Button Back_to_Start;
-        private System.Windows.Forms.FlowLayoutPanel Images_Sorting_fp;
+        private System.Windows.Forms.ListView ImageListView;
     }
 }

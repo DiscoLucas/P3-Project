@@ -40,12 +40,12 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.exportControl1 = new P3_Project.ExportControl();
             this.imageProcessing1 = new P3_Project.ImageProcessing();
             this.starRecognitionControl1 = new P3_Project.StarRecognitionControl();
             this.lightThreasholdControl1 = new P3_Project.LightThreasholdControl();
             this.startControl1 = new P3_Project.StartControl();
             this.startScreenUserControl1 = new P3_Project.StartScreenUserControl();
-            this.exportControl1 = new P3_Project.ExportControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +87,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.newToolStripMenuItem.Text = "&New";
+            this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
@@ -96,7 +96,8 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
@@ -121,6 +122,15 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(221, 6);
+            // 
+            // exportControl1
+            // 
+            this.exportControl1.BackColor = System.Drawing.Color.Transparent;
+            this.exportControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exportControl1.Location = new System.Drawing.Point(0, 30);
+            this.exportControl1.Name = "exportControl1";
+            this.exportControl1.Size = new System.Drawing.Size(1179, 705);
+            this.exportControl1.TabIndex = 9;
             // 
             // imageProcessing1
             // 
@@ -169,15 +179,6 @@
             this.startScreenUserControl1.Size = new System.Drawing.Size(1179, 705);
             this.startScreenUserControl1.TabIndex = 4;
             this.startScreenUserControl1.Load += new System.EventHandler(this.startScreenUserControl1_Load);
-            // 
-            // exportControl1
-            // 
-            this.exportControl1.BackColor = System.Drawing.Color.Transparent;
-            this.exportControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.exportControl1.Location = new System.Drawing.Point(0, 30);
-            this.exportControl1.Name = "exportControl1";
-            this.exportControl1.Size = new System.Drawing.Size(1179, 705);
-            this.exportControl1.TabIndex = 9;
             // 
             // MainForm
             // 

@@ -28,6 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -57,6 +62,7 @@
             this.slider_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.panAndZoomPictureBox1 = new Emgu.CV.UI.PanAndZoomPictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.RGBLINECHART = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -82,6 +88,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Gamma_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slider_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panAndZoomPictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -121,6 +128,7 @@
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.sp_btn, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.RGBLINECHART, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(604, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -129,6 +137,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.70588F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(596, 306);
             this.tableLayoutPanel3.TabIndex = 0;
+            this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
             // sp_btn
             // 
@@ -493,6 +502,41 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // RGBLINECHART
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.RGBLINECHART.ChartAreas.Add(chartArea1);
+            this.RGBLINECHART.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.RGBLINECHART.Legends.Add(legend1);
+            this.RGBLINECHART.Location = new System.Drawing.Point(3, 3);
+            this.RGBLINECHART.Name = "RGBLINECHART";
+            this.RGBLINECHART.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            series1.BorderColor = System.Drawing.Color.Red;
+            series1.BorderWidth = 5;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Red Channel";
+            series2.BorderColor = System.Drawing.Color.Lime;
+            series2.BorderWidth = 5;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Green Channel";
+            series3.BorderColor = System.Drawing.Color.Blue;
+            series3.BorderWidth = 5;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Blue Channel";
+            this.RGBLINECHART.Series.Add(series1);
+            this.RGBLINECHART.Series.Add(series2);
+            this.RGBLINECHART.Series.Add(series3);
+            this.RGBLINECHART.Size = new System.Drawing.Size(590, 255);
+            this.RGBLINECHART.TabIndex = 1;
+            this.RGBLINECHART.Text = "chart1";
+            // 
             // ImageProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -529,6 +573,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Gamma_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slider_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panAndZoomPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -564,5 +609,6 @@
         private System.Windows.Forms.TrackBar Gamma_slider;
         private System.Windows.Forms.NumericUpDown slider_numericUpDown;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart RGBLINECHART;
     }
 }

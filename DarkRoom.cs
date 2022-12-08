@@ -36,7 +36,7 @@ namespace P3_Project
         /// list of the file path for the target images
         /// </summary>
         private List<string> targetImages = new List<string>();
-        private Mat outputImage = null;
+        public Mat outputImage = null;
         public string filename = "opm.TIFF";
         private string outputImagePath = "opm.TIFF";
 
@@ -246,7 +246,7 @@ namespace P3_Project
             }
             return highest;
         }
-        private Mat stackImages(Mat[] wrapeImages)
+        public  Mat stackImages(Mat[] wrapeImages)
         {
             int newHeight = (int)Math.Sqrt((Math.Pow(wrapeImages[0].Size.Height, 2) + Math.Pow(wrapeImages[0].Size.Width, 2)));
 
@@ -259,7 +259,13 @@ namespace P3_Project
             }
             outputImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder + outputImagePath;
             Debug.WriteLine(outputImagePath);
-            staggedImages.Save(outputImagePath);
+            try
+            {
+                staggedImages.Save(outputImagePath);
+            }
+            catch (Exception e) {
+                Debug.WriteLine(outputImagePath);
+            }
             return staggedImages;
         }
        
@@ -349,7 +355,55 @@ namespace P3_Project
 
             return newImg.Mat;
         }
+        /// <summary>
+        /// 1 channel is red, second green and third blue
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public int[][] getImageChartList(Image<Bgr, Byte> image) {
+            int[][] channelNumbers = new int[256][];
+            for (int y = 0; y < image.Rows; y++)
+            {
+                for (int x = 0; x < image.Cols; x++)
+                {
+                    int b = image.Data[y, x, 0];
+                    int g = image.Data[y, x, 1];
+                    int r = image.Data[y, x, 2];
 
+                    if (channelNumbers[b] == null)
+                    {
+                        channelNumbers[b] = new int[3];
+                        channelNumbers[b][2] += 1;
+                    }
+                    else {
+                        channelNumbers[b][2] += 1;
+                    }
+
+                    if (channelNumbers[g] == null)
+                    {
+                        channelNumbers[g] = new int[3];
+                        channelNumbers[g][1] += 1;
+                    }
+                    else
+                    {
+                        channelNumbers[g][1] += 1;
+                    }
+
+                    if (channelNumbers[r] == null)
+                    {
+                        channelNumbers[r] = new int[3];
+                        channelNumbers[r][0] += 1;
+                    }
+                    else
+                    {
+                        channelNumbers[r][0] += 1;
+                    }
+
+                }
+            }
+
+            return channelNumbers;
+        }
         public Mat contrast(Image<Bgr, Byte> image,double alpha, double beta)
         {
             Image<Bgr, Byte> newImg = image.Copy();

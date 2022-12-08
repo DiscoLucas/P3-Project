@@ -12,7 +12,7 @@ namespace P3_Project
         public string[] rawFileFormats = { "NEF", "CR2", "RAW" };
         public string cacheFolder = '\u005c'+"cache" + '\u005c';
         public string logPath = "log.csv";
-        bool logpathBeenSet = false;
+        public bool logpathBeenSet = false;
         private static PageManager instance = null;
         private static readonly object padlock = new object();
         private MainForm form;
@@ -122,7 +122,10 @@ namespace P3_Project
                     string input = "," + imagesPath[i];
                     if (i == 0) {
                         input = stepnumber + input;
+
+                        writeCSVLine(input, false);
                     }
+                    else
                     writeCSVLine(input,true);
                 }
             }

@@ -9,10 +9,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace P3_Project
 {
@@ -40,11 +42,51 @@ namespace P3_Project
             resizeImg = DarkRoom.Instance.getOutputImageAsImage(0.5f);
             panAndZoomPictureBox1.Image = resizeImg;
             output = DarkRoom.Instance.GetMatFromSDImage(resizeImg).ToImage<Bgr, Byte>();
-
+            updateChart(output);
+            Color[] plattet ={ Color.Red,Color.Green,Color.Blue};
+            RGBLINECHART.PaletteCustomColors = plattet;
 
         }
+        public void ImageProcessing_Load(float r, float g, float b, float alpha, float beta, float gamma, bool sbc)
+        {
+            rValue = r;
+            gValue = g;
+            bValue = b;
+            alphaValue = alpha;
+            betaValue = beta;
+            gammaValue = gamma;
+            surfaceBrightnesscuts = sbc;
+            ImageProcessing_Load();
+            loadAllValues();
+        }
 
-        
+        public void loadAllValues()
+        {
+            updateSliderAndBox(r_slider, r_numericUpDown, rValue, 100);
+            updateSliderAndBox(g_slider, g_numericUpDown, gValue, 100);
+            updateSliderAndBox(b_slider, b_numericUpDown, bValue, 100);
+            updateSliderAndBox(Alpha_slider, numericUpDown3, alphaValue, 100);
+            updateSliderAndBox(trackBar3, numericUpDown4, betaValue, 100);
+            updateSliderAndBox(Gamma_slider, slider_numericUpDown, gammaValue, 100);
+
+            updateImage();
+        }
+
+        void updateSliderAndBox(TrackBar slider,NumericUpDown box,float value, float multiply ) {
+            int min = slider.Minimum;
+            int max = slider.Maximum;
+            int newValue = (int)(value * multiply);
+            if (newValue > max) {
+                newValue = max;
+            }else if (newValue < min)
+            {
+                newValue = min;
+            }
+
+            slider.Value = newValue;
+            
+            box.Value = (decimal)(value * multiply);
+        }
         private void panAndZoomPictureBox1_Click(object sender, EventArgs e)
         {
 
@@ -102,10 +144,37 @@ namespace P3_Project
 
             return img;
         }
+
+        void updateChart(Image<Bgr, Byte> img) {
+            int[][] channels = DarkRoom.Instance.getImageChartList(img);
+            RGBLINECHART.Series["Red Channel"].Points.Clear();
+            RGBLINECHART.Series["Green Channel"].Points.Clear();
+            RGBLINECHART.Series["Blue Channel"].Points.Clear();
+            for (int i = 0; i < 256; i++)
+            {
+                if (channels[i] == null)
+                {
+                    RGBLINECHART.Series["Red Channel"].Points.AddXY(i, 0);
+                    RGBLINECHART.Series["Green Channel"].Points.AddXY(i, 0);
+                    RGBLINECHART.Series["Blue Channel"].Points.AddXY(i, 0);
+                }
+                else
+                {
+                    RGBLINECHART.Series["Red Channel"].Points.AddXY(i, channels[i][0]);
+                    RGBLINECHART.Series["Green Channel"].Points.AddXY(i, channels[i][1]);
+                    RGBLINECHART.Series["Blue Channel"].Points.AddXY(i, channels[i][2]);
+
+                    Debug.WriteLine(channels[i][0] + " , " + channels[i][1] + " , " + channels[i][2]);
+                }
+
+                Debug.WriteLine(i);
+            }
+        }
         void updateImage() {
 
             Image<Bgr, Byte> img = output.Clone();
             img = updateImg(img);
+            updateChart(img);
             panAndZoomPictureBox1.Image = img.ToBitmap();
 
         }
@@ -303,7 +372,14 @@ namespace P3_Project
         private void Gamma_slider_Scroll(object sender, EventArgs e)
         {
             gammaValue = (Gamma_slider.Value + 1) / 100;
-            slider_numericUpDown.Value = Gamma_slider.Value;
+            if (slider_numericUpDown.Minimum < Gamma_slider.Value)
+            {
+                slider_numericUpDown.Value = (decimal)0.1;
+            }
+            else { 
+                slider_numericUpDown.Value = Gamma_slider.Value;
+            }
+            
             updateImage();
         }
 
@@ -326,6 +402,11 @@ namespace P3_Project
         }
 
         private void panAndZoomPictureBox1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
         {
 
         }

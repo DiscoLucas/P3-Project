@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,9 +60,31 @@ namespace P3_Project
 
         private void Back_Click(object sender, EventArgs e)
         {
+            string logpathfile = "";
+            if (PageManager.Instance.logpathBeenSet)
+            {
+                logpathfile = PageManager.Instance.logPath;
+            }
+            else
+            {
+                logpathfile = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder + PageManager.Instance.logPath;
+            }
+            if (!File.Exists(logpathfile))
+            {
+                string message = "Log file have been delte  ";
+                MessageBox.Show(message);
+                //lav textbox
+                return;
+            }
+            Debug.WriteLine("file read: " + logpathfile);
+            string[] row = File.ReadAllLines(logpathfile);
+            Debug.WriteLine(row[0]);
+            DarkRoom.Instance.outputImage = new Mat(row[0].Split(',')[row[0].Split(',').Length - 1]);
+
             PageManager.Instance.changePage("imageProcessing1");
             ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
             ip.ImageProcessing_Load();
+            ip.loadAllValues();
         }
 
         private void Export_btn_Click(object sender, EventArgs e)

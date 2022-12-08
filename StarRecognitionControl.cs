@@ -21,9 +21,14 @@ namespace P3_Project
 
         public void startRecognition() {
             DarkRoom.Instance.detectStartsAndStack();
+            loadImagePReview();
+
+
+        }
+
+        public void loadImagePReview() {
             Bitmap original = DarkRoom.Instance.getOutputImageAsImage();
             panAndZoomPictureBox1.Image = original;
-            
         }
         private void StarRecognitionControl_Load(object sender, EventArgs e)
         {

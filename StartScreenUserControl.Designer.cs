@@ -45,7 +45,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.09653F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.90347F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 316F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 327F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
             this.tableLayoutPanel1.Controls.Add(this.Open_Project_btn, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.New_Project_btn, 1, 1);
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
@@ -64,17 +64,18 @@
             this.Open_Project_btn.AutoSize = true;
             this.Open_Project_btn.Location = new System.Drawing.Point(83, 500);
             this.Open_Project_btn.Name = "Open_Project_btn";
-            this.Open_Project_btn.Size = new System.Drawing.Size(234, 65);
+            this.Open_Project_btn.Size = new System.Drawing.Size(233, 65);
             this.Open_Project_btn.TabIndex = 0;
             this.Open_Project_btn.Text = "Open Project";
             this.Open_Project_btn.UseVisualStyleBackColor = true;
+            this.Open_Project_btn.Click += new System.EventHandler(this.Open_Project_btn_Click);
             // 
             // New_Project_btn
             // 
             this.New_Project_btn.AutoSize = true;
             this.New_Project_btn.Location = new System.Drawing.Point(83, 427);
             this.New_Project_btn.Name = "New_Project_btn";
-            this.New_Project_btn.Size = new System.Drawing.Size(234, 67);
+            this.New_Project_btn.Size = new System.Drawing.Size(233, 67);
             this.New_Project_btn.TabIndex = 1;
             this.New_Project_btn.Text = "New Project";
             this.New_Project_btn.UseVisualStyleBackColor = true;
