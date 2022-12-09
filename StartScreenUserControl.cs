@@ -23,6 +23,10 @@ namespace P3_Project
 
         public void newProject() {
             string newImagePath = Directory.GetCurrentDirectory() + PageManager.Instance.cacheFolder;
+            if (!File.Exists(newImagePath))
+            {
+                Directory.CreateDirectory(newImagePath);
+            }
             string[] files = Directory.GetFiles(newImagePath);
             foreach (string file in files)
             {
