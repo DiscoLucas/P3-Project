@@ -237,15 +237,10 @@
             // 
             this.b_numericUpDown.Location = new System.Drawing.Point(3, 236);
             this.b_numericUpDown.Maximum = new decimal(new int[] {
-            300,
+            2550,
             0,
             0,
             0});
-            this.b_numericUpDown.Minimum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            -2147483648});
             this.b_numericUpDown.Name = "b_numericUpDown";
             this.b_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.b_numericUpDown.TabIndex = 19;
@@ -260,8 +255,7 @@
             // 
             this.r_slider.Dock = System.Windows.Forms.DockStyle.Fill;
             this.r_slider.Location = new System.Drawing.Point(3, 3);
-            this.r_slider.Maximum = 300;
-            this.r_slider.Minimum = -300;
+            this.r_slider.Maximum = 2550;
             this.r_slider.Name = "r_slider";
             this.r_slider.Size = new System.Drawing.Size(575, 49);
             this.r_slider.TabIndex = 14;
@@ -272,8 +266,7 @@
             // 
             this.g_slider.Dock = System.Windows.Forms.DockStyle.Fill;
             this.g_slider.Location = new System.Drawing.Point(3, 92);
-            this.g_slider.Maximum = 300;
-            this.g_slider.Minimum = -300;
+            this.g_slider.Maximum = 2550;
             this.g_slider.Name = "g_slider";
             this.g_slider.Size = new System.Drawing.Size(575, 49);
             this.g_slider.TabIndex = 15;
@@ -284,8 +277,7 @@
             // 
             this.b_slider.Dock = System.Windows.Forms.DockStyle.Fill;
             this.b_slider.Location = new System.Drawing.Point(3, 181);
-            this.b_slider.Maximum = 300;
-            this.b_slider.Minimum = -300;
+            this.b_slider.Maximum = 2550;
             this.b_slider.Name = "b_slider";
             this.b_slider.Size = new System.Drawing.Size(575, 49);
             this.b_slider.TabIndex = 16;
@@ -296,15 +288,10 @@
             // 
             this.r_numericUpDown.Location = new System.Drawing.Point(3, 58);
             this.r_numericUpDown.Maximum = new decimal(new int[] {
-            300,
+            2550,
             0,
             0,
             0});
-            this.r_numericUpDown.Minimum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            -2147483648});
             this.r_numericUpDown.Name = "r_numericUpDown";
             this.r_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.r_numericUpDown.TabIndex = 17;
@@ -319,15 +306,10 @@
             // 
             this.g_numericUpDown.Location = new System.Drawing.Point(3, 147);
             this.g_numericUpDown.Maximum = new decimal(new int[] {
-            300,
+            2550,
             0,
             0,
             0});
-            this.g_numericUpDown.Minimum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            -2147483648});
             this.g_numericUpDown.Name = "g_numericUpDown";
             this.g_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.g_numericUpDown.TabIndex = 18;

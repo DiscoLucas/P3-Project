@@ -85,7 +85,7 @@ namespace P3_Project
 
             slider.Value = newValue;
             
-            box.Value = (decimal)(value * multiply);
+            box.Value = (decimal)(newValue);
         }
         private void panAndZoomPictureBox1_Click(object sender, EventArgs e)
         {
