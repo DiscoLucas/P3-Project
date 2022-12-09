@@ -223,21 +223,41 @@ namespace P3_Project
         private void r_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             rValue = (float)r_numericUpDown.Value / 100;
-            r_slider.Value = (int)r_numericUpDown.Value;
+            if ((int)r_numericUpDown.Value > r_slider.Maximum)
+            {
+                r_slider.Value = r_slider.Maximum;
+            }
+            else {
+                r_slider.Value = (int)r_numericUpDown.Value;
+            }
             updateImage();
         }
 
         private void g_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             gValue = (float)g_numericUpDown.Value / 100;
-            g_slider.Value = (int)g_numericUpDown.Value;
+            if ((int)g_numericUpDown.Value > g_slider.Maximum)
+            {
+                g_slider.Value = g_slider.Maximum;
+            }
+            else
+            {
+                g_slider.Value = (int)g_numericUpDown.Value;
+            }
             updateImage();
         }
 
         private void b_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             bValue = (float)b_numericUpDown.Value / 100;
-            b_slider.Value = (int)b_numericUpDown.Value;
+            if ((int)b_numericUpDown.Value > b_slider.Maximum)
+            {
+                b_slider.Value = b_slider.Maximum;
+            }
+            else
+            {
+                b_slider.Value = (int)b_numericUpDown.Value;
+            }
             updateImage();
         }
 

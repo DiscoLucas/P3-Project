@@ -97,7 +97,14 @@ namespace P3_Project
                 float alpha = float.Parse(data[4, 1]);
                 float beta = float.Parse(data[4, 1]);
                 float gamma = float.Parse(data[5, 1]);
-                bool sbc = (int.Parse(data[6, 1]) == 1);
+                bool sbc = false;
+                try {
+                    sbc = (int.Parse(data[6, 1]) == 1);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
                 PageManager.Instance.changePage("imageProcessing1");
                 ImageProcessing ip = (ImageProcessing)PageManager.Instance.getUserControl("imageProcessing1");
                 ip.ImageProcessing_Load(r, g, b, alpha, beta, gamma, sbc);
