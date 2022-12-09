@@ -109,7 +109,7 @@ namespace P3_Project
                     matcher.KnnMatch(Descriptors1, matches, k, null); // matches will now have the result of matching operation.
                     Mat mm = new Mat();
                     Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), null);
-                    mm.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\mabe" + 00 + ".png");
+                    
                     outputImage = mm;
 
                     mask2 = new Mat(matches.Size, 1, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
@@ -135,7 +135,7 @@ namespace P3_Project
                         if (nonzeroElement >= 4)
                         {
                             Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), mask2);
-                            mm.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\mabe" + 01 + ".png");
+                            
                             MachtedImage machtedImage2 = new MachtedImage(matches, KeyPoints2, mask2, Descriptors2, Image2, targetImages[1]);
                             imagesmachtes.Add(machtedImage2);
                             
@@ -214,15 +214,11 @@ namespace P3_Project
             }
 
 
-            imgMask.Mat.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\abe.png");
-
             Mat element = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
 
             CvInvoke.Dilate(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
-            imgMask.Mat.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\1abe.png");
             CvInvoke.Erode(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
             mask = imgMask.Mat;
-            mask.Save("C:\\Users\\Christian\\OneDrive\\Dokumenter\\GitHub\\P3-Project\\bin\\x64\\Debug\\cache\\2abe.png");
             return mask;
         }
         public int getHighestSaturation(Bitmap bmp)
