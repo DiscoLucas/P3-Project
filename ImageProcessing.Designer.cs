@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -152,38 +152,39 @@
             // 
             // RGBLINECHART
             // 
-            chartArea3.Name = "ChartArea1";
-            this.RGBLINECHART.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.RGBLINECHART.ChartAreas.Add(chartArea1);
             this.RGBLINECHART.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.RGBLINECHART.Legends.Add(legend3);
+            legend1.Name = "Legend1";
+            this.RGBLINECHART.Legends.Add(legend1);
             this.RGBLINECHART.Location = new System.Drawing.Point(3, 3);
             this.RGBLINECHART.Name = "RGBLINECHART";
             this.RGBLINECHART.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series7.BorderColor = System.Drawing.Color.Red;
-            series7.BorderWidth = 5;
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Legend = "Legend1";
-            series7.Name = "Red Channel";
-            series8.BorderColor = System.Drawing.Color.Lime;
-            series8.BorderWidth = 5;
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.Legend = "Legend1";
-            series8.Name = "Green Channel";
-            series9.BorderColor = System.Drawing.Color.Blue;
-            series9.BorderWidth = 5;
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Legend = "Legend1";
-            series9.Name = "Blue Channel";
-            this.RGBLINECHART.Series.Add(series7);
-            this.RGBLINECHART.Series.Add(series8);
-            this.RGBLINECHART.Series.Add(series9);
+            series1.BorderColor = System.Drawing.Color.Red;
+            series1.BorderWidth = 5;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Red Channel";
+            series2.BorderColor = System.Drawing.Color.Lime;
+            series2.BorderWidth = 5;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Green Channel";
+            series3.BorderColor = System.Drawing.Color.Blue;
+            series3.BorderWidth = 5;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Blue Channel";
+            this.RGBLINECHART.Series.Add(series1);
+            this.RGBLINECHART.Series.Add(series2);
+            this.RGBLINECHART.Series.Add(series3);
             this.RGBLINECHART.Size = new System.Drawing.Size(590, 255);
             this.RGBLINECHART.TabIndex = 1;
             this.RGBLINECHART.Text = "chart1";
+            this.RGBLINECHART.Click += new System.EventHandler(this.RGBLINECHART_Click);
             // 
             // tabcontrol
             // 

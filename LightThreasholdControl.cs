@@ -34,8 +34,12 @@ namespace P3_Project
         {
             Image images = pictureShow;
             Image<Bgr, Byte> img = DarkRoom.Instance.GetMatFromSDImage(images).ToImage<Bgr, Byte>();
-
-            panAndZoomPictureBox1.Image = DarkRoom.Instance.getDetectionMaskFromImage(img.Mat, 0).ToBitmap();
+            Image<Bgr, Byte> mask = DarkRoom.Instance.getDetectionMaskFromImage(img.Mat, 0).ToImage<Bgr, Byte>();
+            Mat output = DarkRoom.Instance.insertImageFromMask(img, mask);
+            panAndZoomPictureBox1.Image = output.ToBitmap();
+            output.Dispose();
+            mask.Dispose();
+            img.Dispose();
         }
         private void Apply_btn_Click(object sender, EventArgs e)
         {

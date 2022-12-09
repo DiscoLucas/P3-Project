@@ -417,5 +417,10 @@ namespace P3_Project
         {
 
         }
+
+        private void RGBLINECHART_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

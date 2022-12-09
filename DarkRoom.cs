@@ -29,7 +29,7 @@ namespace P3_Project
         /// <summary>
         /// imellem 0 til 1 
         /// </summary>
-        public float lightThreashold = 0.15f;
+        public float lightThreashold = 0.5f;
         private static DarkRoom instance = null;
         private static readonly object padlock = new object();
         /// <summary>
@@ -190,6 +190,27 @@ namespace P3_Project
             return img.Mat;
         }
 
+
+        public Mat insertImageFromMask(Image<Bgr, Byte> simg, Image<Bgr, Byte> output)
+        {
+            for (int y = 0; y < output.Rows; y++)
+            {
+                for (int x = 0; x < output.Cols; x++)
+                {
+                    int b = output.Data[y, x, 0];
+                    int g = output.Data[y, x, 1];
+                    int r = output.Data[y, x, 2];
+                    int a = (int)((b + g + r) / 3);
+                    if (a >= 225)
+                    {
+                        output.Data[y, x, 0] = simg.Data[y, x, 0];
+                        output.Data[y, x, 1] = simg.Data[y, x, 1];
+                        output.Data[y, x, 2] = simg.Data[y, x, 2];
+                    }
+                }
+            }
+            return output.Mat;
+        }
         public Mat getDetectionMaskFromImage(Mat srcImg, int colorgrey)
         {
             Image<Bgr, Byte> simg = srcImg.ToImage<Bgr, Byte>();
