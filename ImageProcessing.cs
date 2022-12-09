@@ -372,9 +372,9 @@ namespace P3_Project
         private void Gamma_slider_Scroll(object sender, EventArgs e)
         {
             gammaValue = (Gamma_slider.Value + 1) / 100;
-            if (slider_numericUpDown.Minimum < Gamma_slider.Value)
+            if (slider_numericUpDown.Minimum > Gamma_slider.Value)
             {
-                slider_numericUpDown.Value = (decimal)0.1;
+                slider_numericUpDown.Value = slider_numericUpDown.Minimum;
             }
             else { 
                 slider_numericUpDown.Value = Gamma_slider.Value;
@@ -386,7 +386,7 @@ namespace P3_Project
         private void slider_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             gammaValue = ((float)slider_numericUpDown.Value + 1) / 100;
-            if (slider_numericUpDown.Minimum < Gamma_slider.Value)
+            if (slider_numericUpDown.Minimum > Gamma_slider.Value)
             {
                 Gamma_slider.Value = (int)Gamma_slider.Minimum;
             }

@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.sp_btn = new System.Windows.Forms.Button();
+            this.RGBLINECHART = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabcontrol = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -62,10 +63,10 @@
             this.slider_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.panAndZoomPictureBox1 = new Emgu.CV.UI.PanAndZoomPictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.RGBLINECHART = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).BeginInit();
             this.tabcontrol.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -88,7 +89,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Gamma_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slider_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panAndZoomPictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -149,6 +149,41 @@
             this.sp_btn.Text = "Save Picture ";
             this.sp_btn.UseVisualStyleBackColor = true;
             this.sp_btn.Click += new System.EventHandler(this.sp_btn_Click);
+            // 
+            // RGBLINECHART
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.RGBLINECHART.ChartAreas.Add(chartArea3);
+            this.RGBLINECHART.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend3.Name = "Legend1";
+            this.RGBLINECHART.Legends.Add(legend3);
+            this.RGBLINECHART.Location = new System.Drawing.Point(3, 3);
+            this.RGBLINECHART.Name = "RGBLINECHART";
+            this.RGBLINECHART.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            series7.BorderColor = System.Drawing.Color.Red;
+            series7.BorderWidth = 5;
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.Name = "Red Channel";
+            series8.BorderColor = System.Drawing.Color.Lime;
+            series8.BorderWidth = 5;
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Legend = "Legend1";
+            series8.Name = "Green Channel";
+            series9.BorderColor = System.Drawing.Color.Blue;
+            series9.BorderWidth = 5;
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series9.Legend = "Legend1";
+            series9.Name = "Blue Channel";
+            this.RGBLINECHART.Series.Add(series7);
+            this.RGBLINECHART.Series.Add(series8);
+            this.RGBLINECHART.Series.Add(series9);
+            this.RGBLINECHART.Size = new System.Drawing.Size(590, 255);
+            this.RGBLINECHART.TabIndex = 1;
+            this.RGBLINECHART.Text = "chart1";
             // 
             // tabcontrol
             // 
@@ -213,6 +248,11 @@
             this.b_numericUpDown.Name = "b_numericUpDown";
             this.b_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.b_numericUpDown.TabIndex = 19;
+            this.b_numericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.b_numericUpDown.ValueChanged += new System.EventHandler(this.b_numericUpDown_ValueChanged);
             // 
             // r_slider
@@ -224,7 +264,7 @@
             this.r_slider.Name = "r_slider";
             this.r_slider.Size = new System.Drawing.Size(575, 49);
             this.r_slider.TabIndex = 14;
-            this.r_slider.Value = 1;
+            this.r_slider.Value = 100;
             this.r_slider.Scroll += new System.EventHandler(this.r_slider_Scroll);
             // 
             // g_slider
@@ -236,7 +276,7 @@
             this.g_slider.Name = "g_slider";
             this.g_slider.Size = new System.Drawing.Size(575, 49);
             this.g_slider.TabIndex = 15;
-            this.g_slider.Value = 1;
+            this.g_slider.Value = 100;
             this.g_slider.Scroll += new System.EventHandler(this.g_slider_Scroll);
             // 
             // b_slider
@@ -248,7 +288,7 @@
             this.b_slider.Name = "b_slider";
             this.b_slider.Size = new System.Drawing.Size(575, 49);
             this.b_slider.TabIndex = 16;
-            this.b_slider.Value = 1;
+            this.b_slider.Value = 100;
             this.b_slider.Scroll += new System.EventHandler(this.b_slider_Scroll);
             // 
             // r_numericUpDown
@@ -267,6 +307,11 @@
             this.r_numericUpDown.Name = "r_numericUpDown";
             this.r_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.r_numericUpDown.TabIndex = 17;
+            this.r_numericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.r_numericUpDown.ValueChanged += new System.EventHandler(this.r_numericUpDown_ValueChanged);
             // 
             // g_numericUpDown
@@ -285,6 +330,11 @@
             this.g_numericUpDown.Name = "g_numericUpDown";
             this.g_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.g_numericUpDown.TabIndex = 18;
+            this.g_numericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.g_numericUpDown.ValueChanged += new System.EventHandler(this.g_numericUpDown_ValueChanged);
             // 
             // tabPage1
@@ -470,20 +520,30 @@
             this.Gamma_slider.Name = "Gamma_slider";
             this.Gamma_slider.Size = new System.Drawing.Size(575, 59);
             this.Gamma_slider.TabIndex = 3;
-            this.Gamma_slider.Value = 1;
+            this.Gamma_slider.Value = 100;
             this.Gamma_slider.Scroll += new System.EventHandler(this.Gamma_slider_Scroll);
             // 
             // slider_numericUpDown
             // 
             this.slider_numericUpDown.Location = new System.Drawing.Point(3, 83);
             this.slider_numericUpDown.Maximum = new decimal(new int[] {
-            4000,
+            1000,
+            0,
+            0,
+            0});
+            this.slider_numericUpDown.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
             this.slider_numericUpDown.Name = "slider_numericUpDown";
             this.slider_numericUpDown.Size = new System.Drawing.Size(120, 22);
             this.slider_numericUpDown.TabIndex = 6;
+            this.slider_numericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.slider_numericUpDown.ValueChanged += new System.EventHandler(this.slider_numericUpDown_ValueChanged);
             // 
             // panAndZoomPictureBox1
@@ -502,41 +562,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // RGBLINECHART
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.RGBLINECHART.ChartAreas.Add(chartArea1);
-            this.RGBLINECHART.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.RGBLINECHART.Legends.Add(legend1);
-            this.RGBLINECHART.Location = new System.Drawing.Point(3, 3);
-            this.RGBLINECHART.Name = "RGBLINECHART";
-            this.RGBLINECHART.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            series1.BorderColor = System.Drawing.Color.Red;
-            series1.BorderWidth = 5;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Red Channel";
-            series2.BorderColor = System.Drawing.Color.Lime;
-            series2.BorderWidth = 5;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Green Channel";
-            series3.BorderColor = System.Drawing.Color.Blue;
-            series3.BorderWidth = 5;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Blue Channel";
-            this.RGBLINECHART.Series.Add(series1);
-            this.RGBLINECHART.Series.Add(series2);
-            this.RGBLINECHART.Series.Add(series3);
-            this.RGBLINECHART.Size = new System.Drawing.Size(590, 255);
-            this.RGBLINECHART.TabIndex = 1;
-            this.RGBLINECHART.Text = "chart1";
-            // 
             // ImageProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -548,6 +573,7 @@
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).EndInit();
             this.tabcontrol.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -573,7 +599,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Gamma_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slider_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panAndZoomPictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RGBLINECHART)).EndInit();
             this.ResumeLayout(false);
 
         }
