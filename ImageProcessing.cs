@@ -386,7 +386,14 @@ namespace P3_Project
         private void slider_numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             gammaValue = ((float)slider_numericUpDown.Value + 1) / 100;
-            Gamma_slider.Value = (int)slider_numericUpDown.Value;
+            if (slider_numericUpDown.Minimum < Gamma_slider.Value)
+            {
+                Gamma_slider.Value = (int)Gamma_slider.Minimum;
+            }
+            else
+            {
+                Gamma_slider.Value = (int)slider_numericUpDown.Value;
+            }
             updateImage();
         }
 
