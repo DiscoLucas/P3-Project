@@ -141,7 +141,7 @@ namespace P3_Project
                         {
                             Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), mask2);
                             
-                            MachtedImage machtedImage2 = new MachtedImage(matches, KeyPoints2, mask2, Descriptors2, Image2, targetImages[1]);
+                            MachtedImage machtedImage2 = new MachtedImage(matches, KeyPoints2, mask2, Descriptors2, Image2, targetImages[j]);
                             imagesmachtes.Add(machtedImage2);
                             
                             gCHandle.Free();
