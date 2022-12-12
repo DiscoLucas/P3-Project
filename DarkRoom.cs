@@ -21,6 +21,7 @@ using Emgu.CV.CvEnum;
 using System.IO.IsolatedStorage;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using System.Security.Policy;
 
 namespace P3_Project
 {
@@ -43,6 +44,13 @@ namespace P3_Project
         private string saveStageName = "saveStage";
         private int indexOfImage = 0;
         private int currentIndexOfImage = 0;
+
+        public int numberOfFeathures = 1500;
+        /// <summary>
+        /// Count of best matches found per each descriptor 
+        /// or less if a descriptor has less than k possible matches in total.
+        /// </summary>
+        public int k = 2;
         DarkRoom()
         {
         }
@@ -76,7 +84,7 @@ namespace P3_Project
             Mat Image1 = CvInvoke.Imread(PathToImage1); /* Emgu.CV.Mat is a class which can store the pixel values.*/
             Mat mask1 = getDetectionMaskFromImage(Image1,255);//create a mask of the area of where it should look for importent points
             VectorOfKeyPoint KeyPoints1 = new VectorOfKeyPoint(); // KeyPoints1 - for storing the keypoints of Image1
-            ORB ORB = new ORB(1500); // Emgu.CV.Features2D.ORB class. this takes care of the orb dectiontion.
+            ORB ORB = new ORB(numberOfFeathures); // Emgu.CV.Features2D.ORB class. this takes care of the orb dectiontion.
             Mat Descriptors1 = new Mat(); // Descriptors1 - for storing the descriptors of Image1
             MachtedImage machtedImage1 = new MachtedImage(null, KeyPoints1, null, Descriptors1, Image1, targetImages[0]);
             imagesmachtes.Add(machtedImage1);
@@ -99,10 +107,7 @@ namespace P3_Project
                     Image<Gray, byte> maskimg = mask2.ToImage<Gray, byte>();
                     KeyPoints2.FilterByPixelsMask(maskimg);
                     double uniquenessthreshold = 0.80;// 
-                    int k = 2;
-                    /*  Count of best matches found per each descriptor 
-                    or less if a descriptor has less than k possible matches in total. */
-
+                    
                     BFMatcher matcher = new BFMatcher(DistanceType.Hamming); // BruteForceMatcher to perform descriptor matching.
                     matcher.Add(Descriptors2); // Descriptors of Image1 is added.
                     VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch(); // For storing the output of matching operation.
