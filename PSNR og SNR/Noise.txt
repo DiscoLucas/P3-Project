@@ -1,0 +1,17 @@
+Ref image = Lenna
+'input image.png'
+List len: 96
+PSNR avg: 9.081328529193582
+SNR avg: 1.536570939890966
+
+'Stacked test DSS.png'
+List len: 96
+PSNR avg: 12.567327931918973
+SNR avg: 4.897836013280283
+
+-----------------------------
+
+Ref image = 'input image cropped.png'
+'Stacked test DSS.png'
+PSNR : 13.72374089069491
+SNR : 2.760395547703638
