@@ -22,6 +22,7 @@ using System.IO.IsolatedStorage;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Policy;
+using System.Data.Common;
 
 namespace P3_Project
 {
@@ -44,13 +45,17 @@ namespace P3_Project
         private string saveStageName = "saveStage";
         private int indexOfImage = 0;
         private int currentIndexOfImage = 0;
-
-        public int numberOfFeathures = 1500;
+        private int blurSize = 3;
+        public int numberOfFeathures = 10000;
+        private int borderSize = 3;
+        private int minKeyPointSize = 3;
         /// <summary>
         /// Count of best matches found per each descriptor 
         /// or less if a descriptor has less than k possible matches in total.
         /// </summary>
         public int k = 2;
+        public float ransac = 3f;
+        double uniquenessthreshold = 0.80;// less this is the less uniqie can the machtes be
         DarkRoom()
         {
         }
@@ -78,45 +83,61 @@ namespace P3_Project
             indexOfImage++;
             outputImage = img;
         }
+        void removeKeyPointsOutOfMask(VectorOfKeyPoint srcKeyPoints, out VectorOfKeyPoint outKeyPoints,Mat mask)
+        {
+            Debug.WriteLine("amount of keypoints: \n before: " + "size: " + srcKeyPoints.Size + " length: " + srcKeyPoints.Length);
+            //skriv det der fjener ting fra masken
+            Mat nMat = new Mat(srcKeyPoints.Size, 1, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+            Image<Gray, Byte> nMask = nMat.ToImage<Gray, Byte>();
+            srcKeyPoints.FilterByPixelsMask(nMask);
+            Debug.Write("\n after: " + "size: " + srcKeyPoints.Size + " length: " + srcKeyPoints.Length + "\n");
+            outKeyPoints = srcKeyPoints;
+            
+        }
+        public Mat toGrayImage(Mat mat) {
+
+            return mat.ToImage<Gray, Byte>().Mat;
+        }
         public void detectStartsAndStack() {
             List<MachtedImage> imagesmachtes = new List<MachtedImage>();
             string PathToImage1 = targetImages[0];
-            Mat Image1 = CvInvoke.Imread(PathToImage1); /* Emgu.CV.Mat is a class which can store the pixel values.*/
+            Mat Image1 = toGrayImage(CvInvoke.Imread(PathToImage1)); /* Emgu.CV.Mat is a class which can store the pixel values.*/
+          
             Mat mask1 = getDetectionMaskFromImage(Image1,255);//create a mask of the area of where it should look for importent points
             VectorOfKeyPoint KeyPoints1 = new VectorOfKeyPoint(); // KeyPoints1 - for storing the keypoints of Image1
+
             ORB ORB = new ORB(numberOfFeathures); // Emgu.CV.Features2D.ORB class. this takes care of the orb dectiontion.
             Mat Descriptors1 = new Mat(); // Descriptors1 - for storing the descriptors of Image1
+            ORB.DetectAndCompute(Image1, mask1, KeyPoints1, Descriptors1, false);
+            removeKeyPointsOutOfMask(KeyPoints1, out KeyPoints1, mask1);
+
             MachtedImage machtedImage1 = new MachtedImage(null, KeyPoints1, null, Descriptors1, Image1, targetImages[0]);
             imagesmachtes.Add(machtedImage1);
-            //Feature Extraction from Image1
-            ORB.DetectAndCompute(Image1, mask1, KeyPoints1, Descriptors1, false);
             for (int j = 1; j < targetImages.Count; j++) {
                 try {
                     
                     
                     string PathToImage2 = targetImages[j];
-                    Mat Image2 = CvInvoke.Imread(PathToImage2); // Image2 now have the details of second image 
+                    
+                    Mat Image2 = toGrayImage(imageStackingPreparation(CvInvoke.Imread(PathToImage2))); // Image2 now have the details of second image 
                     Mat mask2 = getDetectionMaskFromImage(Image2,255);
                     VectorOfKeyPoint KeyPoints2 = new VectorOfKeyPoint(); // KeyPoints2 - for storing the keypoints of Image2
                     Mat Descriptors2 = new Mat(); // Descriptors2 - for storing the descriptors of Image2
-                    
+
                     /* Detects Keypoints in Image1 and then computes descriptors on the image from the keypoints. 
                      * Keypoints will be stored into - KeyPoints1 and Descriptors will be stored into - Descriptors1*/
                     //Feature Extraction from Image2
+                    ORB.Clear();
                     ORB.DetectAndCompute(Image2, mask2, KeyPoints2, Descriptors2, false);
-                    Image<Gray, byte> maskimg = mask2.ToImage<Gray, byte>();
-                    KeyPoints2.FilterByPixelsMask(maskimg);
-                    double uniquenessthreshold = 0.80;// 
-                    
-                    BFMatcher matcher = new BFMatcher(DistanceType.Hamming); // BruteForceMatcher to perform descriptor matching.
+                    removeKeyPointsOutOfMask(KeyPoints2, out KeyPoints2, mask2);
+                    BFMatcher matcher = new BFMatcher(DistanceType.Hamming2); // BruteForceMatcher to perform descriptor matching. and use Hamming 2 because it is speacil made for orb dec
                     matcher.Add(Descriptors2); // Descriptors of Image1 is added.
-                    VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch(); // For storing the output of matching operation.
-                    matcher.KnnMatch(Descriptors1, matches, k, null); // matches will now have the result of matching operation.
+                    VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch(); // For storing the output of matching.
+                    matcher.KnnMatch(Descriptors1, matches, k, null); // matches will now have the result of matching.
                     Mat mm = new Mat();
                     Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), null);
                     
                     outputImage = mm;
-
                     mask2 = new Mat(matches.Size, 1, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
                     mask2.SetTo(new MCvScalar(255));
                     MDMatch[][] array = matches.ToArrayOfArray();
@@ -131,16 +152,19 @@ namespace P3_Project
                             {
                                 array2[i] = 0;
                             }
+                            
+
+                            
                         }
 
                         mat.CopyTo(mask2);
                         mask2 = mat.Clone();
                         int nonzeroElement = CvInvoke.CountNonZero(mask2);
-                        
+                        Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), mask2);
+
+                        Debug.WriteLine(nonzeroElement);
                         if (nonzeroElement >= 4)
                         {
-                            Features2DToolbox.DrawMatches(Image1, KeyPoints1, Image2, KeyPoints2, matches, mm, new MCvScalar(255, 0, 0, 100), new MCvScalar(255, 100, 0, 100), mask2);
-                            
                             MachtedImage machtedImage2 = new MachtedImage(matches, KeyPoints2, mask2, Descriptors2, Image2, targetImages[j]);
                             imagesmachtes.Add(machtedImage2);
                             
@@ -165,28 +189,48 @@ namespace P3_Project
             Mat homography = null;
             Mat[] output = new Mat[(int)imagesmachtes.Count];
             MachtedImage targetImg = imagesmachtes[0];
-            output[0] = imagesmachtes[0].images;
+            output[0] = new Mat(imagesmachtes[0].imagepath);
             Size size = imagesmachtes[0].images.Size;
             string[] paths = new string[(int)imagesmachtes.Count];
             paths[0] = targetImg.imagepath;
-            targetImg.images.Save(targetImg.imagepath);
+            int amountOfErrors  = 0;
             for (int i = 1; i < imagesmachtes.Count; i++)
             {
-                MachtedImage wrapedImg = imagesmachtes[i];
-                homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, 0.5);
-                
-                Mat warpedImage = new Mat();
-                CvInvoke.WarpPerspective(new Mat(wrapedImg.imagepath), warpedImage, homography, size);
+                   
+                    MachtedImage wrapedImg = imagesmachtes[i];
+                    
+                    homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures( wrapedImg.vkeypoints, targetImg.vkeypoints, wrapedImg.maches, wrapedImg.mask, ransac);
+                if (homography != null)
+                {
+                    Mat warpedImage = new Mat();
 
-                output[i] = warpedImage;
-                warpedImage.Save(wrapedImg.imagepath);
-                paths[i] = wrapedImg.imagepath;
+                    CvInvoke.WarpPerspective(new Mat(wrapedImg.imagepath), warpedImage, homography, size);
+                    
 
-                
-                
-                
+                    output[i] = warpedImage;
+                    warpedImage.Save(wrapedImg.imagepath);
+                    paths[i] = wrapedImg.imagepath;
+
+                    homography = null;
+
+                }
+                else {
+                    amountOfErrors++;
+                }
             }
-
+            Debug.WriteLine("amount of errors: " + amountOfErrors);
+            if (amountOfErrors > 0) {
+                Mat[] noutput = new Mat[(int)imagesmachtes.Count- amountOfErrors];
+                int npIndex = 0;
+                for (int i = 0; i < output.Length; i++) {
+                    Mat wPic = output[i];
+                    if (wPic != null) {
+                        noutput[npIndex] = wPic;
+                        npIndex++;
+                    }
+                }
+                return noutput;
+            }
             PageManager.Instance.writeLineToLog(1, paths);
             return output;
         }
@@ -224,9 +268,9 @@ namespace P3_Project
             Mat mask = new Mat(srcImg.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
             mask.SetTo(new MCvScalar(0f));
             Image<Gray, Byte> imgMask = mask.ToImage<Gray, Byte>();
-            for (int y = 0; y < srcImg.Rows; y++)
+            for (int y = borderSize; y < srcImg.Rows- borderSize; y++)
             {
-                for (int x = 0; x < srcImg.Cols; x++)
+                for (int x = borderSize; x < srcImg.Cols- borderSize; x++)
                 {
                     int b = simg.Data[y, x, 0];
                     int g = simg.Data[y, x, 1];
@@ -463,13 +507,52 @@ namespace P3_Project
             return newImg.Mat;
         }
         
-        public void denoize() {
+        public Mat imageStackingPreparation(Mat srcImage) {
+
             //måske noget i denne stil https://www.researchgate.net/profile/Mukesh-Motwani/publication/228790062_Survey_of_image_denoising_techniques/links/5655816308ae4988a7b0b43f/Survey-of-image-denoising-techniques.pdf
+            Mat blur = new Mat();
+            CvInvoke.MedianBlur(srcImage, blur,blurSize);
+            Image<Bgr, Byte> blurImg = blur.ToImage<Bgr, Byte>();
+            Image<Bgr, Byte> mask = getDetectionMaskFromImage(blur, 255).ToImage<Bgr, Byte>();
+            Image<Bgr, Byte> newImg = srcImage.ToImage<Bgr, Byte>();
+            int minimum = 255;
+            for (int y = 0; y < mask.Rows; y++)
+            {
+                for (int x = 0; x < mask.Cols; x++)
+                {
+                    int b = mask.Data[y, x, 0];
+                    int g = mask.Data[y, x, 1];
+                    int r = mask.Data[y, x, 2];
+                    int a = (int)((b + g + r) / 3);
+
+                    if (a < 225)
+                    {
+                        newImg.Data[y, x, 0] = blurImg.Data[y, x, 0];
+                        newImg.Data[y, x, 1] = blurImg.Data[y, x, 1];
+                        newImg.Data[y, x, 2] = blurImg.Data[y, x, 2];
+                        a = (int)((newImg.Data[y, x, 0] + newImg.Data[y, x, 1] + newImg.Data[y, x, 2]) / 3);
+                        if (a < minimum)
+                        {
+                            minimum = a;
+                        }
+                    }
+                }
+            }
+
+
+            newImg -= minimum;
+
+            return newImg.Mat; 
         }
 
         public void addImages(List<string> tm) {
-            foreach (string path in tm)
+            foreach (string path in tm) { 
+                Mat nMat = new Mat(path);
+
                 targetImages.Add(path);
+            }
+                
+                
         }
 
         public void addImages(string m)
