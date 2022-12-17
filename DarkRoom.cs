@@ -260,22 +260,41 @@ namespace P3_Project
             }
             return output.Mat;
         }
+        /// <summary>
+        /// A functions that returns the dectection mask from a srcImg
+        /// </summary>
+        /// <param name="srcImg"></param>
+        /// <param name="colorgrey"></param>
+        /// <returns></returns>
         public Mat getDetectionMaskFromImage(Mat srcImg, int colorgrey)
         {
+            //convert to an image
             Image<Bgr, Byte> simg = srcImg.ToImage<Bgr, Byte>();
+            //get the highest saturation by looping thought the image 
             int highestS = getHighestSaturation(srcImg.ToBitmap());
+            //amount of iteration for the Dilate and Erode functions (3 is the suggestede variable)
             int iterations = 3;
+            //create a Mat that going to hold the mask
             Mat mask = new Mat(srcImg.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+            //make it dark
             mask.SetTo(new MCvScalar(0f));
+            //convert mat to image
             Image<Gray, Byte> imgMask = mask.ToImage<Gray, Byte>();
+
+            //loop though the image
             for (int y = borderSize; y < srcImg.Rows- borderSize; y++)
             {
                 for (int x = borderSize; x < srcImg.Cols- borderSize; x++)
                 {
+                    //get alle the color chanels we know the image is a BG image
                     int b = simg.Data[y, x, 0];
                     int g = simg.Data[y, x, 1];
                     int r = simg.Data[y, x, 2];
+                    //find the average saturation
                     int a = (int)((b + g + r) / 3);
+
+                    //if ther average saturation are bigger then the highest saturation multiplyede by the light Threashold set by the
+                    //user then make the pixel white
                     if (a >= (highestS * lightThreashold))
                     {
                         imgMask.Data[y, x, 0] = 255;
@@ -283,12 +302,14 @@ namespace P3_Project
                 }
             }
 
-
+            // then using the closing methode to remove white noise and give a little edge on the stars 
+            //(src: https://www.geeksforgeeks.org/difference-between-opening-and-closing-in-digital-image-processing/)
             Mat element = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
-
             CvInvoke.Dilate(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
             CvInvoke.Erode(imgMask, imgMask, element, new Point(-1, 1), iterations, borderType: Emgu.CV.CvEnum.BorderType.Replicate, new MCvScalar(255, 255, 255));
+            //convert image to mat
             mask = imgMask.Mat;
+            //return mat
             return mask;
         }
         public int getHighestSaturation(Bitmap bmp)
