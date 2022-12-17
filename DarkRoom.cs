@@ -78,7 +78,7 @@ namespace P3_Project
         public void saveOutputImage(Mat img) {
             string outputPath = PageManager.Instance.cacheFolder + saveStageName + currentIndexOfImage + ".TIFF";
             Debug.WriteLine(outputPath);
-            outputImage.Save(outputImagePath);
+            try { outputImage.Save(outputImagePath); } catch (Exception e) { Debug.WriteLine(e); }
             currentIndexOfImage++;
             indexOfImage++;
             outputImage = img;
