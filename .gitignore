@@ -379,3 +379,5 @@ InteropTests/NativeTests/out
 /src/System.Windows.Forms/src/comctl32.dll
 *.received.*
 .vs/P3-Project/v17/.suo
+PSNR og SNR/A.TIFF
+PSNR og SNR/B.tif
